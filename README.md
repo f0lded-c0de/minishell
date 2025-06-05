@@ -18,6 +18,7 @@
 
 - [ ] Gestion des signaux :
     - [ ] Utiliser sigaction dans le parent pour ignorer le signal de CTRL+\, puis dans les enfants pour revenir au comportement par defaut
+        - (merci mgalvez pour le tuto)
     - [ ] Gerer les signaux de sorties comme dans le pipex du bogoss de la team
 - [ ] Expand
     - [ ] C'est quoi cette merde frr
