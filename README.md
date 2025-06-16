@@ -6,6 +6,17 @@
     - https://learngitbranching.js.org//
 - [ ] Voir la Doc de bash :
     - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html
+        - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Syntax
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Operation
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Quoting
+                - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Single-Quotes
+                - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Double-Quotes
+        - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Commands
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Simple-Commands
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Pipelines
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Lists
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Compound-Commands
+                - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Command-Grouping
 
 ### Parsing :
 
