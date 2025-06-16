@@ -1,20 +1,12 @@
-/* ************************************************************************** */
-/*                                                                            */
-/*                                                        :::      ::::::::   */
-/*   minishell.h                                        :+:      :+:    :+:   */
-/*                                                    +:+ +:+         +:+     */
-/*   By: bsamzun <bsamzun@student.42.fr>            +#+  +:+       +#+        */
-/*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2025/06/16 18:06:59 by bsamzun           #+#    #+#             */
-/*   Updated: 2025/06/16 18:18:44 by bsamzun          ###   ########.fr       */
-/*                                                                            */
-/* ************************************************************************** */
-
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard
+#include <stdio.h>
+#include <stdlib.h>
+#include <unistd.h>
+#include <string.h>
 
 // Custom
 
