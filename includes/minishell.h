@@ -9,6 +9,7 @@
 #include <string.h>
 
 // Custom
+#include "parsing.h"
 
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
