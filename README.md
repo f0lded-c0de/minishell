@@ -22,6 +22,8 @@
                 - Uniquement pour '$VAR' pour les variables d'environnements, ainsi que '$?'.
             - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Filename-Expansion
             - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Quote-Removal
+        - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Redirections
+        - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Executing-Commands
 
 ### Parsing :
 
