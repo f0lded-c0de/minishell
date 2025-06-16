@@ -17,6 +17,11 @@
             - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Lists
             - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Compound-Commands
                 - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Command-Grouping
+        - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Expansions
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Shell-Parameter-Expansion
+                - Uniquement pour '$VAR' pour les variables d'environnements, ainsi que '$?'.
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Filename-Expansion
+            - https://www.gnu.org/savannah-checkouts/gnu/bash/manual/bash.html#Quote-Removal
 
 ### Parsing :
 
