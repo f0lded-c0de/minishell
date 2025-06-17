@@ -18,7 +18,7 @@ int	check_quotes(char *str)
 		i++;
 	}
 	if ((single_count % 2) || (double_count % 2))
-		return (puterr(Q_ERR), 0);
+		return (puterr(QUO_ERR), 0);
 	return (1);
 }
 
@@ -40,22 +40,31 @@ int	check_parenthesis(char *str)
 		i++;
 	}
 	if (open_count != close_count)
-		return (puterr(P_ERR), 0);
+		return (puterr(PAR_ERR), 0);
 	return (1);
-}
-
-int	is_meta(char *str)
-{
-	if (str[0] == ' ' || str[0] == '\t' || str[0] == '\v' || str[0] == '\n'
-		|| str[0] == '<' || str[0] == '(' || str[0] == ')' || str[0] == '>'
-		|| str[0] == '|' || (str[0] == '&' && str[1] == '&'))
-		return (1);
 }
 
 t_tkn	*tokenisation(char *str)
 {
+	t_tkn	tokens;
+	int	i;
+	int	move;
+
 	if (check_quotes(str), check_parenthesis(str))
 		return (NULL);
 	if (!str[0])
-		return (tkn_new(NULL, EMPTY));
+		return (tkn_new("", EMPTY));
+	i = 0;
+	move = 0;
+	tokens = NULL;
+	while (str[i])
+	{
+		while (is_space(str[i]))
+			i++;
+		if (str[i])
+			tokens = get_token(tokens, &str[i], &move);
+		if (!tokens)
+			return (NULL);
+		i += move;
+	}
 }

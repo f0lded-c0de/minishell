@@ -7,8 +7,8 @@ typedef enum	e_type {
 	COMMAND,
 	ARG,
 	RED_IN,
-	RED_OUT,
 	HEREDOC,
+	RED_OUT,
 	APP_OUT,
 	AND,
 	OR,
@@ -23,5 +23,24 @@ typedef struct	s_tkn {
 	struct s_token	*prev;
 	struct s_token	*next;
 }					t_tkn;
+
+
+/* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
+// tokenisation.c
+t_tkn	*tokenisation(char *str);
+
+// tokens.c
+t_tkn	*tkn_new(char *str, t_type type);
+void	tkn_append(t_tkn *start, t_tkn *new);
+void	tkn_free(t_tkn *tokens);
+
+// get_tokens.c
+t_tkn	get_token(t_tkn tokens, char *str, int *i);
+
+// is_charset.c
+int	is_meta(char *str);
+int	is_ctrl(char *str);
+int	is_space(char c);
+int	is_redir(char c);
 
 #endif

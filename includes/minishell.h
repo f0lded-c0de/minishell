@@ -9,7 +9,9 @@
 #include <string.h>
 
 // Custom
+#include "libft.h"
 #include "parsing.h"
+#include "utils.h"
 
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
