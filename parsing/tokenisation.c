@@ -15,8 +15,33 @@ int	check_quotes(char *str)
 			single_count++;
 		if (str[i] == '"' && !(single_count % 2))
 			double_count++;
+		i++;
 	}
-	return ((single_count % 2) + (double_count % 2));
+	if ((single_count % 2) || (double_count % 2))
+		return (puterr(Q_ERR), 0);
+	return (1);
+}
+
+int	check_parenthesis(char *str)
+{
+	int	open_count;
+	int	close_count;
+	int	i;
+
+	open_count = 0;
+	close_count = 0;
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '(')
+			open_count++;
+		if (str[i] == ')')
+			close_count++;
+		i++;
+	}
+	if (open_count != close_count)
+		return (puterr(P_ERR), 0);
+	return (1);
 }
 
 int	is_meta(char *str)
@@ -27,9 +52,10 @@ int	is_meta(char *str)
 		return (1);
 }
 
-t_token	*tokenisation(char *str)
+t_tkn	*tokenisation(char *str)
 {
-	if (check_quotes(str))
-		return (puterr(Q_ERR), NULL);
-
+	if (check_quotes(str), check_parenthesis(str))
+		return (NULL);
+	if (!str[0])
+		return (tkn_new(NULL, EMPTY));
 }

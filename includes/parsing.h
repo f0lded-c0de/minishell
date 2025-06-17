@@ -10,18 +10,18 @@ typedef enum	e_type {
 	RED_OUT,
 	HEREDOC,
 	APP_OUT,
-	PIPE,
 	AND,
 	OR,
+	PIPE,
 	PAR_OPEN,
 	PAR_CLOSE
 }	t_type;
 
-typedef struct	s_token {
+typedef struct	s_tkn {
 	char			*str;
 	t_type			type;
 	struct s_token	*prev;
 	struct s_token	*next;
-}					t_token;
+}					t_tkn;
 
 #endif

@@ -9,5 +9,6 @@ void	puterrno(char *error);
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 // Errors
 # define Q_ERR "minishell: bad syntax: unclosed quotes"
+# define P_ERR "minishell: bad syntax: unclosed parenthesis"
 
 #endif
