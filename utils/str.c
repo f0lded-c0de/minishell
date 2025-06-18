@@ -1,16 +1,21 @@
 #include "minishell"
 
-char	*ft_strndup(const char *src, int n)
+char	*str_append_char(const char *src, const char c)
 {
-	char	*new;
+	char	*dst;
 	size_t	len;
+	int		i;
 
-	len = ft_strlen((char *)src);
-	if (len > n)
-		len = n;
-	new = malloc(sizeof(char) * (len + 1));
-	if (new == NULL)
+	len = 0;
+	if (src)
+		len = ft_strlen((char *)src);
+	dst = malloc(sizeof(char) * (len + 2));
+	if (dst == NULL)
 		return (puterr(MLC_ERR), NULL);
-	ft_strlcpy(new, (char *)src, len + 1);
-	return ((char *)new);
+	i = -1;
+	while (++i < len)
+		dst[i] = str[i];
+	dst[i++] = c;
+	dst[i] = '\0';
+	return ((char *)dst);
 }

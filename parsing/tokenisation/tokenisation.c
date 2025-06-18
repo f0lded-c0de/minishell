@@ -50,12 +50,11 @@ t_tkn	*tokenisation(char *str)
 	int	i;
 	int	move;
 
+	if (!str[0])
+		return (NULL);
 	if (check_quotes(str), check_parenthesis(str))
 		return (NULL);
-	if (!str[0])
-		return (tkn_new("", EMPTY));
 	i = 0;
-	move = 0;
 	tokens = NULL;
 	while (str[i])
 	{

@@ -1,6 +1,6 @@
 #include "minishell"
 
-t_tkn	*tkn_new(char *str, t_type type)
+t_tkn	*tkn_new(char *str)
 {
 	t_tkn	*new;
 
@@ -8,7 +8,7 @@ t_tkn	*tkn_new(char *str, t_type type)
 	if (!new)
 		return (puterr(MLC_ERR), NULL);
 	new->str = str;
-	new->type = type;
+	new->type = NULL;
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);
