@@ -37,6 +37,10 @@ int	ft_pwd(void);
 
 // Builtins Environment Management
 int	ft_env(char **env);
+int	ft_unset(t_shell *shell, char **args);
+
+// Builtins Utils
+int	is_valid_varname(char *name);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 
