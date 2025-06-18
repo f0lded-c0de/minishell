@@ -14,15 +14,20 @@ t_tkn	*tkn_new(char *str)
 	return (new);
 }
 
-void	tkn_append(t_tkn *start, t_tkn *new)
+void	tkn_append(t_tkn **start, t_tkn *new)
 {
 	t_tkn	tmp;
 
-	tmp = start;
-	while (tmp->next)
-		tmp = tmp->next;
-	tmp->next = new;
-	new->prev = tmp;
+	if (*start)
+	{
+		tmp = *start;
+		while (tmp->next)
+			tmp = tmp->next;
+		tmp->next = new;
+		new->prev = tmp;
+	}
+	else
+		*start = new;
 }
 
 void	tkn_free(t_tkn *tokens)
@@ -32,7 +37,7 @@ void	tkn_free(t_tkn *tokens)
 	while (tokens)
 	{
 		next = tokens->next;
-		if (tokens->str && tokens->str[0])
+		if (tokens->str)
 			free(tokens->str);
 		free(tokens);
 		tokens = next;

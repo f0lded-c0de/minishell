@@ -2,21 +2,27 @@
 # define PARSING_H
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
+// enum
 typedef enum	e_type {
-	EMPTY,
-	COMMAND,
-	ARG,
-	RED_IN,
-	HEREDOC,
-	RED_OUT,
-	APP_OUT,
-	AND,
-	OR,
+	WORD,
 	PIPE,
+	OR,
+	AND,
+	RED_IN,
+	RED_OUT,
+	HEREDOC,
+	APP_OUT,
 	PAR_OPEN,
-	PAR_CLOSE
+	PAR_CLOSE,
 }	t_type;
 
+typedef enum	e_quote {
+	NONE,
+	SINGLE,
+	DOUBLE
+}	t_quote;
+
+// struct
 typedef struct	s_tkn {
 	char			*str;
 	t_type			type;
