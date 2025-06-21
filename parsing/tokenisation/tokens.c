@@ -1,4 +1,4 @@
-#include "minishell"
+#include "minishell.h"
 
 t_tkn	*tkn_new(char *str)
 {
@@ -8,7 +8,7 @@ t_tkn	*tkn_new(char *str)
 	if (!new)
 		return (puterr(MLC_ERR), NULL);
 	new->str = str;
-	new->type = NULL;
+	new->type = -1;
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);
@@ -16,7 +16,7 @@ t_tkn	*tkn_new(char *str)
 
 void	tkn_append(t_tkn **start, t_tkn *new)
 {
-	t_tkn	tmp;
+	t_tkn	*tmp;
 
 	if (*start)
 	{
@@ -32,7 +32,7 @@ void	tkn_append(t_tkn **start, t_tkn *new)
 
 void	tkn_free(t_tkn *tokens)
 {
-	t_tkn	next;
+	t_tkn	*next;
 
 	while (tokens)
 	{

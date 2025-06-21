@@ -54,25 +54,20 @@ t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
 	tkn_append(head, new);
 	*tmp = NULL;
 	if (!is_space(c))
-		*tmp = str_append_char(c);
+		*tmp = str_append_char(*tmp, c);
 	return (*head);
-}
-
-t_quote	handle_quotes(char *tmp, char c, t_quote value)
-{
-
 }
 
 t_tkn	*tokenisation(char *str)
 {
-	t_tkn	head;
+	t_tkn	*head;
 	char	*tmp;
 	t_quote	in_quote;
 	int		i;
 
 	if (!str[0])
 		return (NULL);
-	if (check_quotes(str), check_parenthesis(str))
+	if (!check_quotes(str) || !check_parenthesis(str))
 		return (NULL);
 	head = NULL;
 	tmp = NULL;
@@ -124,6 +119,12 @@ t_tkn	*tokenisation(char *str)
 				in_quote = NONE;
 		}
 		i++;
+	}
+	if (tmp)
+	{
+		head = token_delimiter(&head, &tmp, str[i]);
+		if (!head)
+			return (NULL);
 	}
 	return (head);
 }

@@ -7,7 +7,8 @@ void	puterr(char *error);
 void	puterrno(char *error);
 
 // str.c
-char	*ft_strndup(const char *src, int n);
+char	*str_append_char(char *src, char c);
+char	str_last_c(char *str);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 // Errors

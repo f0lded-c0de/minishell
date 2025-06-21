@@ -26,8 +26,8 @@ typedef enum	e_quote {
 typedef struct	s_tkn {
 	char			*str;
 	t_type			type;
-	struct s_token	*prev;
-	struct s_token	*next;
+	struct s_tkn	*prev;
+	struct s_tkn	*next;
 }					t_tkn;
 
 
@@ -36,17 +36,14 @@ typedef struct	s_tkn {
 t_tkn	*tokenisation(char *str);
 
 // tokens.c
-t_tkn	*tkn_new(char *str, t_type type);
-void	tkn_append(t_tkn *start, t_tkn *new);
+t_tkn	*tkn_new(char *str);
+void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_free(t_tkn *tokens);
 
-// get_tokens.c
-t_tkn	get_token(t_tkn tokens, char *str, int *i);
 
 // is_charset.c
-int	is_meta(char *str);
-int	is_ctrl(char *str);
+int	is_operator(char c);
+int	is_double_operator(char c);
 int	is_space(char c);
-int	is_redir(char c);
 
 #endif

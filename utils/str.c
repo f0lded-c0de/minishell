@@ -1,9 +1,9 @@
-#include "minishell"
+#include "minishell.h"
 
-char	*str_append_char(const char *src, const char c)
+char	*str_append_char(char *src, char c)
 {
 	char	*dst;
-	size_t	len;
+	int	len;
 	int		i;
 
 	len = 0;
@@ -18,7 +18,7 @@ char	*str_append_char(const char *src, const char c)
 	}
 	i = -1;
 	while (++i < len)
-		dst[i] = str[i];
+		dst[i] = src[i];
 	dst[i++] = c;
 	dst[i] = '\0';
 	if (src)
