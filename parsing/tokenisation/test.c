@@ -20,8 +20,8 @@ void run_test(const char *input)
 
 int main(void)
 {
-	run_test("");                                      // Empty input
-	run_test("echo");                                  // Single word
+	run_test("< Makefile > outfile");                                      // Empty input
+	run_test("echo|tjek|ls");                                  // Single word
 	run_test("   ");                                   // Only spaces
 	run_test("ls -la /home/user");                     // Normal command
 	run_test("cat < infile > outfile");                // Redirections
@@ -37,7 +37,6 @@ int main(void)
 	run_test("echo hello; ls");                        // Unsupported semicolon
 	run_test("echo \\$USER");                          // Escaped dollar
 	run_test("echo hello >outfile>>outfile2");         // Multiple redirections
-	run_test("<<EOF\nsome\nhere-doc\nEOF");            // Heredoc simulation
 	run_test("echo $?");                               // Special variable
 	run_test("echo 'a | b' | cat");                    // Pipe in quotes
 

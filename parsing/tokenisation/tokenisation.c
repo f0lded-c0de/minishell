@@ -91,7 +91,7 @@ t_tkn	*tokenisation(char *str)
 				if (!head)
 					return (NULL);
 			}
-			else
+			else if (!is_space(str[i]))
 			{
 				tmp = str_append_char(tmp, str[i]);
 				if (!tmp)
