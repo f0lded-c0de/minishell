@@ -50,7 +50,7 @@ int main(void)
 	run_test("echo 'unterminated single");             // Unterminated single quote
 	run_test("echo hello; ls");                        // Unsupported semicolon
 	run_test("echo \\$USER");                          // Escaped dollar
-	run_test("echo hello >outfile>>outfile2");         // Multiple redirections
+	run_test("echo< dk <<hef >dk <df hello >outfile>>outfile2");         // Multiple redirections
 	run_test("echo $?");                               // Special variable
 	run_test("echo 'a | b' | cat");                    // Pipe in quotes
 

@@ -34,7 +34,7 @@ t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
 	type_assign(new);
 	tkn_append(head, new);
 	*tmp = NULL;
-	if (!is_space(c))
+	if (c && !is_space(c))
 		*tmp = str_append_char(*tmp, c);
 	return (*head);
 }
@@ -67,10 +67,10 @@ int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
 	return (1);
 }
 
-int	parse_char_quote(t_tkn *head, char *tmp, char c, t_quote *quote)
+int	parse_char_quote(t_tkn *head, char **tmp, char c, t_quote *quote)
 {
-	tmp = str_append_char(tmp, c);
-	if (!tmp)
+	*tmp = str_append_char(*tmp, c);
+	if (!*tmp)
 		return (tkn_free(head), 0);
 	if (*quote == SINGLE && c == '\'')
 		*quote = NONE;
@@ -94,9 +94,12 @@ t_tkn	*tokeniser(char *str)
 	i = -1;
 	while (str[++i])
 	{
-		if (quote == NONE && !parse_char_unquote(&head, &tmp, str[i], &quote))
-			return (NULL);
-		else if (!parse_char_quote(head, tmp, str[i], &quote))
+		if (quote == NONE)
+		{
+			if (!parse_char_unquote(&head, &tmp, str[i], &quote))
+				return (NULL);
+		}
+		else if (!parse_char_quote(head, &tmp, str[i], &quote))
 			return (NULL);
 	}
 	if (tmp)
