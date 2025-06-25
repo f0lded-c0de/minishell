@@ -33,17 +33,20 @@ typedef struct	s_tkn {
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // tokenisation.c
-t_tkn	*tokenisation(char *str);
+t_tkn	*tokeniser(char *str);
 
 // tokens.c
 t_tkn	*tkn_new(char *str);
 void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_free(t_tkn *tokens);
 
+// pre_check.c
+int		check_parenthesis(char *str);
+int		check_quotes(char *str);
 
 // is_charset.c
-int	is_operator(char c);
-int	is_double_operator(char c);
-int	is_space(char c);
+int		is_operator(char c);
+int		is_double_operator(char c);
+int		is_space(char c);
 
 #endif

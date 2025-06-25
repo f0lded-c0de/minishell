@@ -1,5 +1,6 @@
-SRC =	parsing/tokenisation/is_charset.c parsing/tokenisation/test.c \
-		parsing/tokenisation/tokenisation.c parsing/tokenisation/tokens.c \
+SRC =	parsing/tokens/is_charset.c parsing/tokens/test.c \
+		parsing/tokens/tokeniser.c parsing/tokens/tokens.c \
+		parsing/tokens/pre_check.c \
 		utils/errors.c utils/str.c
 
 OBJ = $(SRC:.c=.o)
@@ -30,6 +31,7 @@ $(DEBUG): $(SRC)
 
 clean:
 	rm -f */*.o
+	rm -f */*/*.o
 	rm -f $(LIBFT)/libft.a
 
 fclean: clean
