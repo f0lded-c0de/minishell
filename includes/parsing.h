@@ -41,8 +41,7 @@ void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_free(t_tkn *tokens);
 
 // pre_check.c
-int		check_parenthesis(char *str);
-int		check_quotes(char *str);
+int	check_unclosed(char *str);
 
 // is_charset.c
 int		is_operator(char c);

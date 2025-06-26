@@ -86,7 +86,7 @@ t_tkn	*tokeniser(char *str)
 	t_quote	quote;
 	int		i;
 
-	if (!str[0] || !check_quotes(str) || !check_parenthesis(str))
+	if (!str[0] || !check_unclosed(str))
 		return (NULL);
 	head = NULL;
 	tmp = NULL;
