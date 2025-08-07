@@ -53,6 +53,10 @@ int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
 		*head = token_delimiter(head, tmp, c);
 		if (!*head)
 			return (0);
+		if (c == '\'')
+			*quote = SINGLE;
+		if (c == '"')
+			*quote = DOUBLE;
 	}
 	else if (!is_space(c))
 	{
