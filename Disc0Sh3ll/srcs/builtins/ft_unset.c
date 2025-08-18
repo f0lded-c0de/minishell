@@ -13,7 +13,7 @@ static int	unset_single_var(t_shell *shell, char *var_name)
 	int	i;
 	int	var_len;
 
-	if (!is_valid_varname(var_name))
+	if (!valid_varname(var_name))
 		return (print_invalid_name_error(var_name));
 	var_len = ft_strlen(var_name);
 	i = 0;

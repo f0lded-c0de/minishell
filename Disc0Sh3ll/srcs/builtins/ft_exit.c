@@ -33,7 +33,7 @@ int	ft_exit(int ac, char **args)
 			write(2, "exit: numeric argument required\n", 32);
 			exit(255);
 		}
-		exit_code = atoi(args[1]);
+		exit_code = ft_atoi(args[1]);
 		exit(exit_code);
 	}
 	exit(0);

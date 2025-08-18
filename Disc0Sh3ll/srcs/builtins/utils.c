@@ -1,6 +1,6 @@
 #include "exec.h"
 
-int	is_valid_varname(char *name)
+int	valid_varname(char *name)
 {
 	int	i;
 

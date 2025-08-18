@@ -1,138 +1,41 @@
 #include "exec.h"
+#include <stdlib.h>
+#include <string.h>
 
-static int	print_invalid_identifier_error(char *var_name)
+static int	print_error(char *var)
 {
-	ft_putstr_fd("export: `", 2);
-	ft_putstr_fd(var_name, 2);
+	ft_putstr_fd("export: '", 2);
+	ft_putstr_fd(var, 2);
 	ft_putstr_fd("': not a valid identifier\n", 2);
 	return (1);
 }
 
-static void	free_sorted_env(char **sorted_env, int size)
-{
-	int	i;
-
-	i = 0;
-	while (i < size)
-	{
-		free(sorted_env[i]);
-		i++;
-	}
-}
-
-static char	**allocate_sorted_env(char **env, int size)
-{
-	char	**sorted_env;
-	int		i;
-
-	sorted_env = malloc(sizeof(char *) * (size + 1));
-	i = 0;
-	while (i < size)
-	{
-		sorted_env[i] = ft_strdup(env[i]);
-		i++;
-	}
-	sorted_env[size] = NULL;
-	return (sorted_env);
-}
-
-static void	sort_env_array(char **sorted_env, int size)
-{
-	int		i;
-	int		j;
-	char	*temp;
-
-	i = 0;
-	while (i < size - 1)
-	{
-		j = 0;
-		while (j < size - i - 1)
-		{
-			if (ft_strncmp(sorted_env[j], sorted_env[j + 1],
-					ft_strlen(sorted_env[j])) > 0)
-			{
-				temp = sorted_env[j];
-				sorted_env[j] = sorted_env[j + 1];
-				sorted_env[j + 1] = temp;
-			}
-			j++;
-		}
-		i++;
-	}
-}
-
-static char	**create_sorted_env(char **env, int *size)
-{
-	char	**sorted_env;
-
-	*size = 0;
-	while (env[*size])
-		(*size)++;
-	sorted_env = allocate_sorted_env(env, *size);
-	sort_env_array(sorted_env, *size);
-	return (sorted_env);
-}
-
-static void	print_env_entry(char *entry)
+static int	update_env_2(t_shell *shell, char **new_var, char *var, int i)
 {
 	int	j;
 
-	ft_putstr_fd("declare -x ", 1);
 	j = 0;
-	while (entry[j] && entry[j] != '=')
-		ft_putchar_fd(entry[j++], 1);
-	if (entry[j] == '=')
+	while (j < i)
 	{
-		ft_putstr_fd("=\"", 1);
+		new_var[j] = shell->env[j];
 		j++;
-		ft_putstr_fd(entry + j, 1);
-		ft_putchar_fd('"', 1);
 	}
-	ft_putchar_fd('\n', 1);
-}
-
-static void	print_sorted_env(char **env)
-{
-	int		i;
-	int		size;
-	char	**sorted_env;
-
-	sorted_env = create_sorted_env(env, &size);
-	i = 0;
-	while (i < size)
+	new_var[i] = ft_strdup(var);
+	if (!new_var[i])
 	{
-		print_env_entry(sorted_env[i]);
-		i++;
+		free(new_var);
+		return (1);
 	}
-	free_sorted_env(sorted_env, size);
-	free(sorted_env);
-}
-
-static int	validate_var(char *var)
-{
-	char	*name;
-	int		result;
-
-	if (!ft_strchr(var, '='))
-	{
-		if (is_valid_varname(var))
-			return (0);
-		else
-			return (print_invalid_identifier_error(var));
-	}
-	name = ft_substr(var, 0, ft_strchr(var, '=') - var);
-	if (!is_valid_varname(name))
-	{
-		free(name);
-		return (print_invalid_identifier_error(var));
-	}
-	free(name);
+	new_var[i + 1] = NULL;
+	free(shell->env);
+	shell->env = new_var;
 	return (0);
 }
 
-static int	update_existing_var(t_shell *shell, char *var, char *name)
+static int	update_env(t_shell *shell, char *var, char *name)
 {
-	int	i;
+	int		i;
+	char	**new_var;
 
 	i = 0;
 	while (shell->env[i])
@@ -142,59 +45,41 @@ static int	update_existing_var(t_shell *shell, char *var, char *name)
 		{
 			free(shell->env[i]);
 			shell->env[i] = ft_strdup(var);
-			return (1);
+			if (!shell->env[i])
+				return (1);
+			return (0);
 		}
 		i++;
 	}
-	return (0);
-}
-
-static int	add_new_var(t_shell *shell, char *var, int env_size)
-{
-	char	**new_env;
-	int		j;
-
-	new_env = malloc(sizeof(char *) * (env_size + 2));
-	if (!new_env)
+	new_var = malloc(sizeof(char *) * (i + 2));
+	if (!new_var)
 		return (1);
-	j = 0;
-	while (j < env_size)
-	{
-		new_env[j] = shell->env[j];
-		j++;
-	}
-	new_env[env_size] = ft_strdup(var);
-	new_env[env_size + 1] = NULL;
-	free(shell->env);
-	shell->env = new_env;
+	update_env_2(shell, new_var, var, i);
 	return (0);
 }
 
-static int	add_or_update_env(t_shell *shell, char *var)
+static int	process_variable(t_shell *shell, char *var)
 {
-	int		i;
+	char	*equals;
 	char	*name;
-	int		result;
+	int		res;
 
-	if (!ft_strchr(var, '='))
-		return (validate_var(var));
-	name = ft_substr(var, 0, ft_strchr(var, '=') - var);
-	if (!is_valid_varname(name))
+	equals = ft_strchr(var, '=');
+	if (!equals)
 	{
-		free(name);
-		return (print_invalid_identifier_error(var));
-	}
-	if (update_existing_var(shell, var, name))
-	{
-		free(name);
+		if (!valid_varname(var))
+			return (print_error(var));
 		return (0);
 	}
-	i = 0;
-	while (shell->env[i])
-		i++;
-	result = add_new_var(shell, var, i);
+	name = ft_substr(var, 0, (equals - var));
+	if (!valid_varname(name))
+	{
+		free(name);
+		return (print_error(var));
+	}
+	res = update_env(shell, var, name);
 	free(name);
-	return (result);
+	return (res);
 }
 
 int	ft_export(t_shell *shell, char **args)
@@ -202,18 +87,88 @@ int	ft_export(t_shell *shell, char **args)
 	int	i;
 	int	status;
 
+	i = 0;
+	status = 0;
 	if (!args || !args[0])
 	{
-		print_sorted_env(shell->env);
+		handle_env(shell->env);
 		return (0);
 	}
-	status = 0;
-	i = 0;
 	while (args[i])
 	{
-		if (add_or_update_env(shell, args[i]) != 0)
+		if (process_variable(shell, args[i]) != 0)
 			status = 1;
 		i++;
 	}
 	return (status);
+}
+
+int main(void)
+{
+    // Initialiser un environnement de test
+    char *env_init[] = {
+        "PATH=/usr/bin:/bin",
+        "HOME=/home/user",
+        "USER=student",
+        NULL
+    };
+    
+    // Créer la structure shell
+    t_shell shell;
+    
+    // Allouer et copier l'environnement
+    int env_size = 0;
+    while (env_init[env_size])
+        env_size++;
+    
+    shell.env = malloc(sizeof(char *) * (env_size + 1));
+    if (!shell.env)
+        return (1);
+    
+    for (int i = 0; i < env_size; i++)
+        shell.env[i] = ft_strdup(env_init[i]);
+    shell.env[env_size] = NULL;
+    
+    // Afficher l'environnement initial
+    printf("=== Environnement initial ===\n");
+    for (int i = 0; shell.env[i]; i++)
+        printf("%s\n", shell.env[i]);
+    
+    // Test 1: export sans arguments
+    printf("\n=== Test 1: export sans arguments ===\n");
+    char *args1[] = {NULL};
+    ft_export(&shell, args1);
+    
+    // Test 2: export avec un nom valide
+    printf("\n=== Test 2: export FOO=bar ===\n");
+    char *args2[] = {"FOO=bar", NULL};
+    ft_export(&shell, args2);
+    
+    // Afficher l'environnement mis à jour
+    printf("\n=== Environnement après Test 2 ===\n");
+    for (int i = 0; shell.env[i]; i++)
+        printf("%s\n", shell.env[i]);
+    
+    // Test 3: export avec un nom invalide
+    printf("\n=== Test 3: export 123=invalid ===\n");
+    char *args3[] = {"123=invalid", NULL};
+    int status = ft_export(&shell, args3);
+    printf("Statut de retour: %d\n", status);
+    
+    // Test 4: export avec plusieurs arguments
+    printf("\n=== Test 4: export multiple ===\n");
+    char *args4[] = {"A=1", "B=2", "C=3", NULL};
+    ft_export(&shell, args4);
+    
+    // Afficher l'environnement final
+    printf("\n=== Environnement final ===\n");
+    for (int i = 0; shell.env[i]; i++)
+        printf("%s\n", shell.env[i]);
+    
+    // Libérer la mémoire
+    for (int i = 0; shell.env[i]; i++)
+        free(shell.env[i]);
+    free(shell.env);
+    
+    return (0);
 }
