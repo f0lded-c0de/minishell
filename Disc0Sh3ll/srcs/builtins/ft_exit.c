@@ -1,4 +1,6 @@
 #include "exec.h"
+#include <climits>
+#include <cstdlib>
 
 static int	ft_strisdigit(char *str)
 {
@@ -18,7 +20,7 @@ static int	ft_strisdigit(char *str)
 
 int	ft_exit(int ac, char **args)
 {
-	int	exit_code;
+	unsigned long long	exit_code;
 
 	exit_code = 0;
 	if (ac > 2)
@@ -31,10 +33,15 @@ int	ft_exit(int ac, char **args)
 		if (!ft_strisdigit(args[1]))
 		{
 			write(2, "exit: numeric argument required\n", 32);
-			exit(255);
+			exit(2);
 		}
-		exit_code = ft_atoi(args[1]);
-		exit(exit_code);
+		exit_code = ft_atoi_custom(args[1]);
+		if (exit_code >= LLONG_MAX)
+		{
+			write(2, "exit: numeric argument required\n", 32);
+			exit(2);
+		}
+		exit((int)exit_code);
 	}
 	exit(0);
 }

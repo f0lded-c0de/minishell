@@ -6,17 +6,18 @@
 /*   By: agenisse <agenisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/12 21:05:28 by agenisse          #+#    #+#             */
-/*   Updated: 2024/11/12 21:12:54 by agenisse         ###   ########.fr       */
+/*   Updated: 2025/08/20 15:08:23 by agenisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
+#include <limits.h>
 
-int	ft_atoi(const char *str)
+unsigned long long	ft_atoi_custom(const char *str)
 {
 	int		i;
-	int		n;
-	long	dest;
+	unsigned long long	n;
+	unsigned long long	dest;
 
 	i = 0;
 	n = 1;
@@ -34,7 +35,7 @@ int	ft_atoi(const char *str)
 		dest = ((dest * 10) + (str[i] - '0'));
 		i++;
 	}
-	return (dest * n);
+	return (((dest * n) % 256 + 256) % 256);
 }
 /*
 #include <stdlib.h>

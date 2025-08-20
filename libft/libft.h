@@ -6,7 +6,7 @@
 /*   By: agenisse <agenisse@student.42.fr>          +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/11 18:01:57 by agenisse          #+#    #+#             */
-/*   Updated: 2025/06/16 18:12:51 by agenisse         ###   ########.fr       */
+/*   Updated: 2025/08/20 15:08:47 by agenisse         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,7 +23,7 @@ typedef struct s_list
 	struct s_list	*next;
 }					t_list;
 
-int			ft_atoi(const char *str);
+unsigned long long			ft_atoi_custom(const char *str);
 int			ft_isalnum(char c);
 int			ft_isalpha(int c);
 int			ft_isascii(int c);

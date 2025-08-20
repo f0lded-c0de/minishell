@@ -8,9 +8,17 @@
 # include <unistd.h>
 # include <string.h>
 # include <limits.h>
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 // Custom
 # include "../../../libft/libft.h"
+
+// Defines
+# define SHELL_NAME "Disc0Sh3ll"
+# define INTERACTIVE_MODE 1
+# define EXECUTION_MODE 0
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 
