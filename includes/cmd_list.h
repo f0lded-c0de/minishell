@@ -3,18 +3,23 @@
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
-typedef enum	e_cmd_type {
+typedef enum	e_exec_type {
 	SIMPLE,
-	COMPOUND
+	COMPOUND,
+	PIPE,
+	AND,
+	OR
 }	t_cmd_type;
 
 // struct
-typedef struct	s_cmd {
-	void			*cmd;
-	t_cmd_type		type;
-	struct s_tkn	*prev;
-	struct s_tkn	*next;
-}					t_cmd;
+typedef struct	s_exec {
+	void			*ptr;
+	t_exec_type		type;
+	struct s_exec	*left;
+	struct s_exec	*right;
+	int				fd_in;
+	int				fd_out;
+}					t_exec;
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
