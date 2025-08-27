@@ -6,10 +6,10 @@
 typedef enum	e_exec_type {
 	SIMPLE,
 	COMPOUND,
-	PIPE,
-	AND,
-	OR
-}	t_cmd_type;
+	PIPE_NODE,
+	AND_NODE,
+	OR_NODE
+}	t_exec_type;
 
 // struct
 typedef struct	s_exec {

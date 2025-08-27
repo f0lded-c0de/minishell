@@ -40,8 +40,9 @@ t_tkn	*tkn_new(char *str);
 void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_free(t_tkn *tokens);
 
-// pre_check.c
-int	check_unclosed(char *str);
+// check.c
+int		check_unclosed(char *str);
+void	check_syntax(t_tkn **head);
 
 // is_charset.c
 int		is_operator(char c);

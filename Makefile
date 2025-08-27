@@ -1,6 +1,6 @@
 SRC =	parsing/tokens/is_charset.c parsing/tokens/test.c \
 		parsing/tokens/tokeniser.c parsing/tokens/tokens.c \
-		parsing/tokens/pre_check.c \
+		parsing/tokens/tkn_check.c \
 		utils/errors.c utils/str.c
 
 OBJ = $(SRC:.c=.o)

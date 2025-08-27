@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-const char *type_to_str(t_type type)
+const char *type_to_str(t_tkn_type type)
 {
 	static const char *names[] = {
 		"WORD", "PIPE", "OR", "AND",
@@ -35,7 +35,8 @@ void run_test(const char *input)
 int main(int ac, char **av)
 {
 	(void)ac;
-	run_test(av[1]);
+	(void)av;
+	run_test("cd c(s>f || fjd<<eof ks | dfh \"fhdslk )fjd\" )djf ' fdkj \" fjdk ' || ddfjk&& ");
 	/* run_test("df( ')word' ) | test"); */
 	/* run_test("< Makefile > outfile");                                      // Empty input */
 	/* run_test("echo|tjek|ls");                                  // Single word */

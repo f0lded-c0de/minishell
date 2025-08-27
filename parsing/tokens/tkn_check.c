@@ -1,5 +1,6 @@
 #include "minishell.h"
 
+// pre_check
 void	null_init_ints_counters(int *a, int *b, int *c, int *d)
 {
 	*a = 0;
@@ -33,4 +34,27 @@ int	check_unclosed(char *str)
 	if (par_count != 0)
 		return (puterr(PAR_ERR), 0);
 	return (1);
+}
+
+// post_check
+void	check_syntax(t_tkn **head)
+{
+	t_tkn	*tmp;
+
+	tmp = *head;
+	while (tmp)
+	{
+		if ((tmp->type >= PIPE && tmp->type <= APP_OUT
+			&& (!tmp->next || tmp->next->type != WORD))
+			|| (tmp->type >= PIPE && tmp->type <= AND
+			&& (!tmp->prev || tmp->prev->type != WORD)))
+		{
+			puterrarg(TKN_ERR, tmp->str);
+			tkn_free(*head);
+			*head = NULL;
+			tmp = NULL;
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
 }

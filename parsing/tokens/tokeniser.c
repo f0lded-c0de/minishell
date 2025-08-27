@@ -108,5 +108,6 @@ t_tkn	*tokeniser(char *str)
 	}
 	if (tmp)
 		head = token_delimiter(&head, &tmp, str[i]);
+	check_syntax(&head);
 	return (head);
 }
