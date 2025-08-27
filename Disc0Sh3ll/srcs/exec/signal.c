@@ -1,15 +1,24 @@
 #include "../builtins/exec.h"
-#include <readline/readline.h>
-#include <signal.h>
-#include <unistd.h>
+
+int	g_status = 0;
 
 void	handle_sigint(int sig)
 {
-	(void)sig;
+	g_status = sig;
+
 	write(STDOUT_FILENO, "\n", 1);
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
+	
+}
+
+void	exit_handler(t_shell *shell)
+{
+	if (g_status == SIGINT)
+		shell->exit_status = 130;
+	if (g_status == SIGQUIT)
+		shell->exit_status = 131;
 }
 
 void	setup_signal(int mode)

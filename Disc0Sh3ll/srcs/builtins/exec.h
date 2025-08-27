@@ -32,7 +32,10 @@ typedef struct s_shell
 {
 	t_tool	*tool;
 	char	**env;
+	int		exit_status;
 }	t_shell;
+
+extern int	g_status;
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // Builtins Shell Control
@@ -51,6 +54,11 @@ void	handle_env(char **env);
 
 // Builtins Utils
 int		valid_varname(char *name);
+
+// Signal Handling
+void	handle_sigint(int sig);
+void	setup_signal(int mode);
+void	exit_handler(t_shell *shell);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 
