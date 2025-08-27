@@ -36,7 +36,7 @@ int main(int ac, char **av)
 {
 	(void)ac;
 	(void)av;
-	run_test("cd c(s>f || fjd<<eof ks | dfh \"fhdslk )fjd\" )djf ' fdkj \" fjdk ' || ddfjk&& ");
+	run_test("cd c(s)>f(dfj) || (fjd)<<eof (ks | dfh \"fhdslk )fjd\" )(djf ' fdkj \" (fjdk ') || (ddfjk)&&(jf) ");
 	/* run_test("df( ')word' ) | test"); */
 	/* run_test("< Makefile > outfile");                                      // Empty input */
 	/* run_test("echo|tjek|ls");                                  // Single word */
