@@ -1,4 +1,4 @@
-#include "../builtins/exec.h"
+#include "minishell.h"
 
 int	g_status = 0;
 
@@ -10,7 +10,6 @@ void	handle_sigint(int sig)
 	rl_on_new_line();
 	rl_replace_line("", 0);
 	rl_redisplay();
-	
 }
 
 void	exit_handler(t_shell *shell)

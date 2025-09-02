@@ -1,4 +1,4 @@
-#include "exec.h"
+#include "minishell.h"
 
 static int	update_oldpwd(t_shell *shell)
 {

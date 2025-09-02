@@ -1,5 +1,4 @@
-#include "exec.h"
-#include <stdlib.h>
+#include "minishell.h"
 
 static void	sort_env(char **env, int size)
 {

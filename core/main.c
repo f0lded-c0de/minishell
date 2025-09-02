@@ -1,8 +1,9 @@
-#include "../builtins/exec.h"
+#include "minishell.h"
 
 int	main_shell_loop(t_shell *shell)
 {
 	char	*input;
+	t_tkn	*tkn_lst;
 	int		status;
 
 	while (1)
@@ -14,7 +15,9 @@ int	main_shell_loop(t_shell *shell)
 			break;
 		if (*input)
 			add_history(input);
-		parsing;
+		tkn_lst = tokeniser(input);
+		if (!tkn_lst)
+			break;
 		setup_signal(EXECUTION_MODE);
 		exit_handler(shell);
 		status = execute_cmd(char *cmd, char **envp)

@@ -1,6 +1,4 @@
-#include "exec.h"
-#include <stdlib.h>
-#include <string.h>
+#include "minishell.h"
 
 static int	print_error(char *var)
 {
