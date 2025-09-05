@@ -12,9 +12,6 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
-// Custom
-# include "../../../libft/libft.h"
-
 // Defines
 # define SHELL_NAME "Disc0Sh3ll"
 # define INTERACTIVE_MODE 1
@@ -22,18 +19,13 @@
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 
-typedef struct s_tool
+typedef struct s_exdata
 {
 	char	*pwd;
 	char	*oldpwd;
-}	t_tool;
-
-typedef struct s_shell
-{
-	t_tool	*tool;
 	char	**env;
 	int		exit_status;
-}	t_shell;
+}	t_exdata;
 
 extern int	g_status;
 
@@ -43,13 +35,14 @@ int		ft_echo(char **args);
 int		ft_exit(int ac, char **args);
 
 // Builtins Directory Navigation
-int		ft_cd(t_shell *shell, int ac, char **args);
+int		ft_cd(t_exdata *shell, int ac, char **args);
 int		ft_pwd(void);
+int		update_pwd_env(t_exdata *shell);
 
 // Builtins Environment Management
 int		t_env(char **env);
-int		ft_unset(t_shell *shell, char **args);
-int		ft_export(t_shell *shell, char **args);
+int		ft_unset(t_exdata *shell, char **args);
+int		ft_export(t_exdata *shell, char **args);
 void	handle_env(char **env);
 
 // Builtins Utils
@@ -58,7 +51,7 @@ int		valid_varname(char *name);
 // Signal Handling
 void	handle_sigint(int sig);
 void	setup_signal(int mode);
-void	exit_handler(t_shell *shell);
+void	exit_handler(t_exdata *shell);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 

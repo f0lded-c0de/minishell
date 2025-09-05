@@ -8,7 +8,7 @@ static int	print_invalid_name_error(char *var_name)
 	return (1);
 }
 
-static int	unset_single_var(t_shell *shell, char *var_name)
+static int	unset_single_var(t_exdata *shell, char *var_name)
 {
 	int	i;
 	int	var_len;
@@ -35,7 +35,7 @@ static int	unset_single_var(t_shell *shell, char *var_name)
 	return (0);
 }
 
-int	ft_unset(t_shell *shell, char **args)
+int	ft_unset(t_exdata *shell, char **args)
 {
 	int	i;
 	int	status;

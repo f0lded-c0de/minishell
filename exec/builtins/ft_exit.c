@@ -1,6 +1,4 @@
 #include "minishell.h"
-#include <climits>
-#include <cstdlib>
 
 static int	ft_strisdigit(char *str)
 {
@@ -35,7 +33,7 @@ int	ft_exit(int ac, char **args)
 			write(2, "exit: numeric argument required\n", 32);
 			exit(2);
 		}
-		exit_code = ft_atoi_custom(args[1]);
+		exit_code = ft_atoi(args[1]);
 		if (exit_code >= LLONG_MAX)
 		{
 			write(2, "exit: numeric argument required\n", 32);

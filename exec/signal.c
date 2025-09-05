@@ -1,4 +1,7 @@
 #include "minishell.h"
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
 int	g_status = 0;
 
@@ -12,7 +15,7 @@ void	handle_sigint(int sig)
 	rl_redisplay();
 }
 
-void	exit_handler(t_shell *shell)
+void	exit_handler(t_exdata *shell)
 {
 	if (g_status == SIGINT)
 		shell->exit_status = 130;

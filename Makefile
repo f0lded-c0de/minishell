@@ -1,7 +1,13 @@
 SRC =	parsing/tokens/is_charset.c parsing/tokens/test.c \
-		parsing/tokens/tokeniser.c parsing/tokens/tokens.c \
-		parsing/tokens/tkn_check.c \
-		utils/errors.c utils/str.c
+		parsing/tokens/tokeniser.c parsing/tokens/utils.c \
+		parsing/tokens/checks.c \
+		exec/builtins/ft_cd.c exec/builtins/ft_echo.c \
+		exec/builtins/ft_env.c exec/builtins/ft_exit.c \
+		exec/builtins/ft_export.c exec/builtins/ft_export_2.c \
+		exec/builtins/ft_pwd.c exec/builtins/ft_unset.c \
+		exec/builtins/utils.c \
+		exec/signal.c \
+		core/main.c core/errors.c core/str.c \
 
 OBJ = $(SRC:.c=.o)
 

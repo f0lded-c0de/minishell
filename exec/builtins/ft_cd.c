@@ -1,42 +1,42 @@
 #include "minishell.h"
 
-static int	update_oldpwd(t_shell *shell)
+static int	update_oldpwd(t_exdata *shell)
 {
 	int	i;
 
-	if (!shell->tool->pwd)
+	if (!shell->pwd)
 		return (0);
-	if (shell->tool->oldpwd)
-		free(shell->tool->oldpwd);
-	shell->tool->oldpwd = shell->tool->pwd;
+	if (shell->oldpwd)
+		free(shell->oldpwd);
+	shell->oldpwd = shell->pwd;
 	i = 0;
 	while (shell->env[i] && ft_strncmp(shell->env[i], "OLDPWD=", 7) != 0)
 		i++;
 	if (shell->env[i])
 	{
 		free(shell->env[i]);
-		shell->env[i] = ft_strjoin("OLDPWD=", shell->tool->oldpwd);
+		shell->env[i] = ft_strjoin("OLDPWD=", shell->oldpwd);
 	}
 	return (0);
 }
 
-static int	update_pwd(t_shell *shell, char *cwd)
+static int	update_pwd(t_exdata *shell, char *cwd)
 {
 	int	i;
 
-	shell->tool->pwd = ft_strdup(cwd);
+	shell->pwd = ft_strdup(cwd);
 	i = 0;
 	while (shell->env[i] && ft_strncmp(shell->env[i], "PWD=", 4) != 0)
 		i++;
 	if (shell->env[i])
 	{
 		free(shell->env[i]);
-		shell->env[i] = ft_strjoin("PWD=", shell->tool->pwd);
+		shell->env[i] = ft_strjoin("PWD=", shell->pwd);
 	}
 	return (0);
 }
 
-static int	update_pwd_env(t_shell *shell)
+int	update_pwd_env(t_exdata *shell)
 {
 	char	buffer[PATH_MAX];
 	char	*cwd;
@@ -63,7 +63,7 @@ static char	*get_home_dir(char **env)
 	return (NULL);
 }
 
-static char	*get_target_dir(t_shell *shell, int ac, char **args)
+static char	*get_target_dir(t_exdata *shell, int ac, char **args)
 {
 	char	*home;
 
@@ -79,18 +79,18 @@ static char	*get_target_dir(t_shell *shell, int ac, char **args)
 	}
 	else if (ac == 2 && ft_strncmp(args[1], "-", 1) == 0)
 	{
-		if (!shell->tool->oldpwd)
+		if (!shell->oldpwd)
 		{
 			ft_putstr_fd("cd: OLDPWD not set\n", 2);
 			return (NULL);
 		}
-		ft_putendl_fd(shell->tool->oldpwd, 1);
-		return (shell->tool->oldpwd);
+		ft_putendl_fd(shell->oldpwd, 1);
+		return (shell->oldpwd);
 	}
 	return (args[1]);
 }
 
-int	ft_cd(t_shell *shell, int ac, char **args)
+int	ft_cd(t_exdata *shell, int ac, char **args)
 {
 	char	*target_dir;
 

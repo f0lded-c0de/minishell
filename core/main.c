@@ -1,15 +1,24 @@
 #include "minishell.h"
+# include <signal.h>
+# include <readline/readline.h>
+# include <readline/history.h>
 
-int	main_shell_loop(t_shell *shell)
+int	main(int ac, char **av, char **env)
 {
-	char	*input;
-	t_tkn	*tkn_lst;
-	int		status;
+	t_exdata	exdata;
+	t_tkn		*tkn_lst;
+	char		*input;
+	/* int			status; */
 
+	(void)ac;
+	(void)av;
+	exdata.env = env;
+	exdata.exit_status = 0;
+	update_pwd_env(&exdata);
 	while (1)
 	{
 		setup_signal(INTERACTIVE_MODE);
-		exit_handler(shell);
+		exit_handler(&exdata);
 		input = readline("Disc0Sh3ll$ ");
 		if (!input)
 			break;
@@ -19,8 +28,8 @@ int	main_shell_loop(t_shell *shell)
 		if (!tkn_lst)
 			break;
 		setup_signal(EXECUTION_MODE);
-		exit_handler(shell);
-		status = execute_cmd(char *cmd, char **envp)
+		exit_handler(&exdata);
+		/* status = execute_cmd(char *cmd, char **envp) */
 		free(input);
 	}
 	return (0);
