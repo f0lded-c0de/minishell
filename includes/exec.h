@@ -31,27 +31,28 @@ extern int	g_status;
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // Builtins Shell Control
-int		ft_echo(char **args);
-int		ft_exit(int ac, char **args);
+int					ft_echo(char **args);
+int					ft_exit(int ac, char **args);
 
 // Builtins Directory Navigation
-int		ft_cd(t_exdata *shell, int ac, char **args);
-int		ft_pwd(void);
-int		update_pwd_env(t_exdata *shell);
+int					ft_cd(t_exdata *shell, int ac, char **args);
+int					ft_pwd(void);
+int					update_pwd_env(t_exdata *shell);
 
 // Builtins Environment Management
-int		t_env(char **env);
-int		ft_unset(t_exdata *shell, char **args);
-int		ft_export(t_exdata *shell, char **args);
-void	handle_env(char **env);
+int					t_env(char **env);
+int					ft_unset(t_exdata *shell, char **args);
+int					ft_export(t_exdata *shell, char **args);
+void				handle_env(char **env);
 
 // Builtins Utils
-int		valid_varname(char *name);
+int					valid_varname(char *name);
+unsigned long long	ft_atoull(const char *str);
 
 // Signal Handling
-void	handle_sigint(int sig);
-void	setup_signal(int mode);
-void	exit_handler(t_exdata *shell);
+void				handle_sigint(int sig);
+void				setup_signal(int mode);
+void				exit_handler(t_exdata *shell);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 

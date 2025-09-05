@@ -12,7 +12,7 @@ int	main(int ac, char **av, char **env)
 
 	(void)ac;
 	(void)av;
-	exdata.env = env;
+	exdata.env = split_cpy(env);
 	exdata.exit_status = 0;
 	exdata.pwd = 0;
 	update_pwd_env(&exdata);

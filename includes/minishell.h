@@ -32,6 +32,7 @@ void	puterrarg(char *error, char *arg);
 // str.c
 char	*str_append_char(char *src, char c);
 char	str_last_c(char *str);
+char	**split_cpy(char **src);
 
 // test.c
 void	run_token_test(const char *input);
