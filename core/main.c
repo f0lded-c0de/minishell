@@ -3,10 +3,38 @@
 # include <readline/readline.h>
 # include <readline/history.h>
 
+const char *type_to_str(t_tkn_type type)
+{
+	static const char *names[] = {
+		"WORD", "PIPE", "OR", "AND",
+		"RED_IN", "RED_OUT", "HEREDOC", "APP_OUT",
+		"PAR_OPEN", "PAR_CLOSE"
+	};
+
+	if (type >= 0 && type <= PAR_CLOSE)
+		return names[type];
+	else
+		return "UNKNOWN";
+}
+
+void print_token_list(t_tkn *head)
+{
+	t_tkn	*tmp;
+
+	tmp = head;
+	while (tmp)
+	{
+		printf("Type : [%s]     Token: [%s]\n", type_to_str(tmp->type), tmp->str);
+		tmp = tmp->next;
+	}
+	printf("----\n");
+	tkn_free(head);
+}
+
 int	main(int ac, char **av, char **env)
 {
 	t_exdata	exdata;
-	t_tkn		*tkn_lst;
+	t_tkn		*tokens;
 	char		*input;
 	/* int			status; */
 
@@ -25,12 +53,13 @@ int	main(int ac, char **av, char **env)
 			break;
 		if (*input)
 			add_history(input);
-		tkn_lst = tokeniser(input);
-		if (!tkn_lst)
-			break;
+		printf("Input : \"%s\"\n", input);
+		tokens = tokeniser(input);
 		setup_signal(EXECUTION_MODE);
 		exit_handler(&exdata);
 		/* status = execute_cmd(char *cmd, char **envp) */
+		if (tokens)
+			print_token_list(tokens);
 		free(input);
 	}
 	return (0);

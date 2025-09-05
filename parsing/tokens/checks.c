@@ -49,7 +49,9 @@ void	check_syntax(t_tkn **head)
 			|| (tmp->type >= PIPE && tmp->type <= AND && (!tmp->prev
 			|| (tmp->prev->type != WORD && tmp->prev->type != PAR_CLOSE)))
 			|| (tmp->type >= RED_IN && tmp->type <= APP_OUT
-			&& (!tmp->prev || tmp->next->type != WORD)))
+			&& tmp->next->type != WORD)
+			|| (tmp->type == PAR_OPEN && tmp->prev && tmp->prev->type == WORD)
+			|| (tmp->type == PAR_CLOSE && tmp->next && tmp->next->type == WORD))
 		{
 			puterrarg(TKN_ERR, tmp->str);
 			tkn_free(*head);
