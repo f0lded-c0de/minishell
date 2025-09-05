@@ -15,7 +15,7 @@ CFLAGS += -Wall -Werror -Wextra -I./includes -I./libft
 
 LDFLAGS = -L./libft
 
-LDLIBS = -lft
+LDLIBS = -lft -lreadline
 
 NAME = minishell
 

@@ -37,3 +37,37 @@ char	str_last_c(char *str)
 		i++;
 	return (str[i - 1]);
 }
+
+void	free_split(char **split)
+{
+	int	i;
+
+	if (split)
+	{
+		i = -1;
+		while (split[++i])
+			free(split[i]);
+		free(split);
+	}
+}
+
+char	**split_cpy(char **src)
+{
+	char	**dst;
+	int		i;
+
+	i = 0;
+	while (src[i])
+		i++;
+	dst = malloc(sizeof(char *) * (i + 1));
+	if (!dst)
+		return (NULL);
+	dst[i] = NULL;
+	while (--i >= 0)
+	{
+		dst[i] = ft_strdup(src[i]);
+		if (!dst[i])
+			return (free_split(dst), NULL);
+	}
+	return (dst);
+}
