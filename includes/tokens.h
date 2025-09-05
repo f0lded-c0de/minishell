@@ -26,6 +26,7 @@ typedef enum	e_tkn_type {
 typedef struct	s_tkn {
 	char			*str;
 	t_tkn_type		type;
+	int				hd_fd;
 	struct s_tkn	*prev;
 	struct s_tkn	*next;
 }					t_tkn;

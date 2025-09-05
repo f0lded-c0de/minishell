@@ -9,6 +9,7 @@ t_tkn	*tkn_new(char *str)
 		return (puterr(MLC_ERR), NULL);
 	new->str = str;
 	new->type = -1;
+	new->hd_fd = -1;
 	new->prev = NULL;
 	new->next = NULL;
 	return (new);
@@ -28,6 +29,25 @@ void	tkn_append(t_tkn **start, t_tkn *new)
 	}
 	else
 		*start = new;
+}
+
+void	tkn_rm_next(t_tkn *tkn)
+{
+	t_tkn	*tmp;
+
+	if (tkn)
+	{
+		tmp = tkn->next;
+		if (tmp)
+		{
+			tkn->next = tmp->next;
+			if (tmp->next)
+				tmp->next->prev = tkn;
+			if (tmp->str)
+				free(tmp->str);
+			free(tmp);
+		}
+	}
 }
 
 void	tkn_free(t_tkn *tokens)
