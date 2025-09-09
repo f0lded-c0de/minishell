@@ -59,6 +59,8 @@ void	tkn_free(t_tkn *tokens)
 		next = tokens->next;
 		if (tokens->str)
 			free(tokens->str);
+		if (tokens->type == HEREDOC && tokens->hd_fd != -1)
+			close(tokens->hd_fd);
 		free(tokens);
 		tokens = next;
 	}

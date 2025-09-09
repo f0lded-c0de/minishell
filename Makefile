@@ -6,7 +6,9 @@ SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		exec/builtins/ft_pwd.c exec/builtins/ft_unset.c \
 		exec/builtins/utils.c \
 		exec/signal.c \
-		core/main.c core/errors.c core/str.c \
+		core/main.c core/errors.c core/str.c
+
+TST =	parsing/heredocs/get_delim.c
 
 OBJ = $(SRC:.c=.o)
 
@@ -32,6 +34,11 @@ $(NAME): $(OBJ)
 $(DEBUG): $(SRC)
 	make -C $(LIBFT)
 	cc $(CFLAGS) -g3 $(SRC) -o $(DEBUG) $(LDFLAGS) $(LDLIBS)
+	make clean
+
+test: $(TST)
+	make -C $(LIBFT)
+	cc $(CFLAGS) $(TST) -o test $(LDFLAGS) $(LDLIBS)
 	make clean
 
 clean:

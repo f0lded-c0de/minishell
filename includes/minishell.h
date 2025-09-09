@@ -1,6 +1,9 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 
+/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
+
+
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard
 # include <stdio.h>
@@ -18,9 +21,6 @@
 # include "parsing.h"
 # include "tokens.h"
 # include "exec.h"
-
-
-/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */

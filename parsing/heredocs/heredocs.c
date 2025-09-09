@@ -14,6 +14,6 @@ void	parse_here_docs(t_tkn *head)
 {
 	while (head)
 	{
-		if (head->type == HEREDOC && head->next)
+		if (head->type == HEREDOC)
 	}
 }

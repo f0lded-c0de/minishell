@@ -1,7 +1,4 @@
 #include "minishell.h"
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 int	g_status = 0;
 

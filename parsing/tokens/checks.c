@@ -49,8 +49,26 @@ void	check_syntax(t_tkn **head)
 			|| (tmp->type >= PIPE && tmp->type <= AND && (!tmp->prev
 			|| (tmp->prev->type != WORD && tmp->prev->type != PAR_CLOSE)))
 			|| (tmp->type >= RED_IN && tmp->type <= APP_OUT
-			&& tmp->next->type != WORD)
-			|| (tmp->type == PAR_OPEN && tmp->prev && tmp->prev->type == WORD)
+			&& tmp->next->type != WORD))
+		{
+			puterrarg(TKN_ERR, tmp->str);
+			tkn_free(*head);
+			*head = NULL;
+			tmp = NULL;
+		}
+		if (tmp)
+			tmp = tmp->next;
+	}
+}
+
+void	check_par(t_tkn **head)
+{
+	t_tkn	*tmp;
+
+	tmp = *head;
+	while (tmp)
+	{
+		if ((tmp->type == PAR_OPEN && tmp->prev && tmp->prev->type == WORD)
 			|| (tmp->type == PAR_CLOSE && tmp->next && tmp->next->type == WORD))
 		{
 			puterrarg(TKN_ERR, tmp->str);

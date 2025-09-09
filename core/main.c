@@ -1,7 +1,4 @@
 #include "minishell.h"
-# include <signal.h>
-# include <readline/readline.h>
-# include <readline/history.h>
 
 const char *type_to_str(t_tkn_type type)
 {

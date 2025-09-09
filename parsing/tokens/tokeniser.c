@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-void	type_assign(t_tkn *token)
+static void	type_assign(t_tkn *token)
 {
 	if (!is_operator(token->str[0]))
 		token->type = WORD;
@@ -24,7 +24,7 @@ void	type_assign(t_tkn *token)
 		token->type = PAR_CLOSE;
 }
 
-t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
+static t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
 {
 	t_tkn	*new;
 
@@ -39,7 +39,7 @@ t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
 	return (*head);
 }
 
-int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
+static int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
 {
 	if (is_double_operator(c) && c == str_last_c(*tmp) && ft_strlen(*tmp) == 1)
 	{
@@ -71,7 +71,7 @@ int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
 	return (1);
 }
 
-int	parse_char_quote(t_tkn *head, char **tmp, char c, t_quote *quote)
+static int	parse_char_quote(t_tkn *head, char **tmp, char c, t_quote *quote)
 {
 	*tmp = str_append_char(*tmp, c);
 	if (!*tmp)
@@ -109,5 +109,7 @@ t_tkn	*tokeniser(char *str)
 	if (tmp)
 		head = token_delimiter(&head, &tmp, str[i]);
 	check_syntax(&head);
+	parse_here_docs(head);
+	check_par(&head);
 	return (head);
 }

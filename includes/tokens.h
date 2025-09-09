@@ -3,12 +3,6 @@
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
-typedef enum	e_quote {
-	NONE,
-	SINGLE,
-	DOUBLE
-}	t_quote;
-
 typedef enum	e_tkn_type {
 	WORD,
 	PIPE,
@@ -31,7 +25,6 @@ typedef struct	s_tkn {
 	struct s_tkn	*next;
 }					t_tkn;
 
-
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // tokenisation.c
 t_tkn	*tokeniser(char *str);
@@ -44,6 +37,7 @@ void	tkn_free(t_tkn *tokens);
 // check.c
 int		check_unclosed(char *str);
 void	check_syntax(t_tkn **head);
+void	check_par(t_tkn **head);
 
 // is_charset.c
 int		is_operator(char c);
