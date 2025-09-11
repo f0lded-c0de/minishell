@@ -17,11 +17,17 @@ const char *type_to_str(t_tkn_type type)
 void print_token_list(t_tkn *head)
 {
 	t_tkn	*tmp;
-
+	if (!head)
+	{
+		printf("Empty token list");
+		return;
+	}
 	tmp = head;
 	while (tmp)
 	{
 		printf("Type : [%s]     Token: [%s]\n", type_to_str(tmp->type), tmp->str);
+		if (tmp->type == HEREDOC)
+			printf("hd_fd : %d", tmp->hd_fd);
 		tmp = tmp->next;
 	}
 	printf("----\n");

@@ -32,6 +32,7 @@ t_tkn	*tokeniser(char *str);
 // tokens.c
 t_tkn	*tkn_new(char *str);
 void	tkn_append(t_tkn **start, t_tkn *new);
+void	tkn_rm_next(t_tkn *tkn);
 void	tkn_free(t_tkn *tokens);
 
 // check.c

@@ -15,7 +15,7 @@ t_tkn	*tkn_new(char *str)
 	return (new);
 }
 
-void	tkn_append(t_tkn **start, t_tkn *new)
+void	tkn_append(t_tkn **start, t_tkn *add)
 {
 	t_tkn	*tmp;
 
@@ -24,11 +24,11 @@ void	tkn_append(t_tkn **start, t_tkn *new)
 		tmp = *start;
 		while (tmp->next)
 			tmp = tmp->next;
-		tmp->next = new;
-		new->prev = tmp;
+		tmp->next = add;
+		add->prev = tmp;
 	}
 	else
-		*start = new;
+		*start = add;
 }
 
 void	tkn_rm_next(t_tkn *tkn)

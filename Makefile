@@ -1,5 +1,7 @@
 SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		parsing/tokens/tokeniser.c parsing/tokens/utils.c \
+		parsing/heredocs/get_delim.c parsing/heredocs/heredocs.c \
+		parsing/heredocs/utils.c \
 		exec/builtins/ft_cd.c exec/builtins/ft_echo.c \
 		exec/builtins/ft_env.c exec/builtins/ft_exit.c \
 		exec/builtins/ft_export.c exec/builtins/ft_export_2.c \

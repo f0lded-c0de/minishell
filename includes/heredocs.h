@@ -13,7 +13,15 @@ typedef struct	s_delim_status {
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
-// file.c
+// heredocs.c
+int		parse_here_docs(t_tkn *head);
+
+// get_delim.c
+char	*get_delim(char *str);
+
+// utils.c
+int		ft_strcmp(char *s1, char *s2);
+void	close_pipes(int pipe[2]);
 
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */

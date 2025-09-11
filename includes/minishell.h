@@ -43,6 +43,8 @@ void	run_token_test(const char *input);
 # define QUO_ERR "minishell: bad syntax: unclosed quotes"
 # define PAR_ERR "minishell: bad syntax: unclosed parenthesis"
 # define TKN_ERR "minishell: bad syntax: error near unexpected token "
+# define HDC_ERR "minishell: here_doc needs delimiter to finish"
+# define PIP_ERR "minishell: pipe failed: "
 
 
 #endif
