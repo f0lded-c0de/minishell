@@ -71,3 +71,12 @@ char	**split_cpy(char **src)
 	}
 	return (dst);
 }
+
+void	free_exdata(t_exdata *exdata)
+{
+	free_split(exdata->env);
+	if (exdata->pwd)
+		free(exdata->pwd);
+	if (exdata->oldpwd)
+		free(exdata->oldpwd);
+}

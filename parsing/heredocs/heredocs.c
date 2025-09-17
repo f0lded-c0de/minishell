@@ -17,8 +17,8 @@ static int	handle_here_doc(t_tkn *hd, int expand, char *delim)
 			return (free(delim), close_pipes(fd), puterr(HDC_ERR), 0);
 		if (!ft_strcmp(input, delim))
 			break ;
-		/* if (expand) */
-		/* 	ft_expand; */
+		if (expand)
+			input = ft_expand(input);
 		write(fd[1], input, ft_strlen(input));
 		write(fd[1], "\n", 1);
 		free(input);

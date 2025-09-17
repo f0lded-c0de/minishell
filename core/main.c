@@ -14,6 +14,36 @@ const char *type_to_str(t_tkn_type type)
 		return "UNKNOWN";
 }
 
+void	print_here_doc(t_tkn *tkn)
+{
+	char	*buffer;
+	int		read_count;
+
+	printf("heredoc content :\n\n");
+	buffer = malloc(sizeof(char) * 101);
+	read_count = read(tkn->hd_fd, buffer, 100);
+	if (read_count == -1)
+	{
+		puterrno("debug: read() failed lmao: ");
+		free(buffer);
+		return ;
+	}
+	buffer[read_count] = '\0';
+	while (read_count > 0)
+	{
+		printf("%s\n\n", buffer);
+		read_count = read(tkn->hd_fd, buffer, 100);
+		if (read_count == -1)
+		{
+			puterrno("debug: read() failed lmao: ");
+			free(buffer);
+			return ;
+		}
+		buffer[read_count] = '\0';
+	}
+	free(buffer);
+}
+
 void print_token_list(t_tkn *head)
 {
 	t_tkn	*tmp;
@@ -27,7 +57,7 @@ void print_token_list(t_tkn *head)
 	{
 		printf("Type : [%s]     Token: [%s]\n", type_to_str(tmp->type), tmp->str);
 		if (tmp->type == HEREDOC)
-			printf("hd_fd : %d", tmp->hd_fd);
+			print_here_doc(tmp);
 		tmp = tmp->next;
 	}
 	printf("----\n");
@@ -46,6 +76,7 @@ int	main(int ac, char **av, char **env)
 	exdata.env = split_cpy(env);
 	exdata.exit_status = 0;
 	exdata.pwd = 0;
+	exdata.oldpwd = 0;
 	update_pwd_env(&exdata);
 	while (1)
 	{
@@ -56,6 +87,12 @@ int	main(int ac, char **av, char **env)
 			break;
 		if (*input)
 			add_history(input);
+		if (!ft_strncmp(input, "exit", 4))
+		{
+			free(input);
+			free_exdata(&exdata);
+			return (0);
+		}
 		printf("Input : \"%s\"\n", input);
 		tokens = tokeniser(input);
 		setup_signal(EXECUTION_MODE);
@@ -65,5 +102,6 @@ int	main(int ac, char **av, char **env)
 			print_token_list(tokens);
 		free(input);
 	}
+	free_exdata(&exdata);
 	return (0);
 }

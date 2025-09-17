@@ -9,6 +9,10 @@ typedef enum	e_quote {
 	DOUBLE
 }	t_quote;
 
+/* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
+// expand.c
+char	*ft_expand(char *str);
+
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Custom
 # include "tokens.h"

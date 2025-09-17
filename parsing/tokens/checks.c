@@ -45,7 +45,8 @@ void	check_syntax(t_tkn **head)
 	while (tmp)
 	{
 		if ((tmp->type >= PIPE && tmp->type <= AND && (!tmp->next
-			|| (tmp->next->type != WORD && tmp->next->type != PAR_OPEN)))
+			|| (tmp->next->type == PAR_CLOSE 
+			|| (tmp->next->type >= PIPE && tmp->next->type <= AND))))
 			|| (tmp->type >= PIPE && tmp->type <= AND && (!tmp->prev
 			|| (tmp->prev->type != WORD && tmp->prev->type != PAR_CLOSE)))
 			|| (tmp->type >= RED_IN && tmp->type <= APP_OUT

@@ -33,6 +33,7 @@ void	puterrarg(char *error, char *arg);
 char	*str_append_char(char *src, char c);
 char	str_last_c(char *str);
 char	**split_cpy(char **src);
+void	free_exdata(t_exdata *exdata);
 
 // test.c
 void	run_token_test(const char *input);
@@ -45,6 +46,7 @@ void	run_token_test(const char *input);
 # define TKN_ERR "minishell: bad syntax: error near unexpected token "
 # define HDC_ERR "minishell: here_doc needs delimiter to finish"
 # define PIP_ERR "minishell: pipe failed: "
+# define ENV_ERR "minishell: where tf your env at bro???"
 
 
 #endif
