@@ -94,12 +94,14 @@ int	main(int ac, char **av, char **env)
 			return (0);
 		}
 		printf("Input : \"%s\"\n", input);
-		tokens = tokeniser(input);
+		tokens = tokeniser(env, input);
 		setup_signal(EXECUTION_MODE);
 		exit_handler(&exdata);
 		/* status = execute_cmd(char *cmd, char **envp) */
 		if (tokens)
 			print_token_list(tokens);
+		else
+			printf("Tokenisation failed lol\n");
 		free(input);
 	}
 	free_exdata(&exdata);

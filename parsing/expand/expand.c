@@ -6,7 +6,7 @@ static char	*handle_unexpand(char *str, char *res, int i, int j)
 	char	*dst;
 	int		k;
 
-	tmp = malloc(sizeof(char) * ((i - j) + 1));
+	tmp = malloc(sizeof(char) * ((j - i) + 1));
 	if (!tmp)
 		return (puterr(MLC_ERR), NULL);
 	k = -1;
@@ -60,19 +60,20 @@ static char	*get_name(char *str, int i[2])
 	return (name);
 }
 
-char	**get_value(char **env, char *name)
+static char	*get_value(char **env, char *name)
 {
 	char	*value;
 	int		i;
 
-	if (!env[0])
+	if (!env || !env[0])
 		return (puterr(ENV_ERR), NULL);
+	i = 0;
 	while (env[i])
 	{
 		if (!ft_strncmp(env[i], name, ft_strlen(name))
 			&& env[i][ft_strlen(name)] == '=')
 		{
-			value = ft_strdup(&env[0][ft_strlen(name) + 1]);
+			value = ft_strdup(&env[i][ft_strlen(name) + 1]);
 			if (!value)
 				puterr(MLC_ERR);
 			return (value);
@@ -109,7 +110,7 @@ static char	*handle_expand(char **env, char *str, char *res, int i[2])
 	return (dst);
 }
 
-char	*ft_expand(char *str)
+char	*ft_expand(char **env, char *str)
 {
 	char	*res;
 	int		expand;
@@ -151,6 +152,10 @@ char	*ft_expand(char *str)
 		}
 		i[1]++;
 	}
+	if (expand == 0 && i[0] != i[1])
+		res = handle_unexpand(str, res, i[0], i[1]);
+	else if (expand == 1 && i[0] != i[1])
+		res = handle_expand(env, str, res, i);
 	free(str);
 	return (res);
 }
