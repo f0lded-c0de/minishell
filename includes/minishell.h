@@ -26,6 +26,7 @@ typedef struct	s_maxishell t_maxishell;
 typedef struct	s_maxishell {
 	t_exdata	exdata;
 	t_tkn		*tokens;
+	t_exec		*pipeline;
 }				t_maxishell;
 
 

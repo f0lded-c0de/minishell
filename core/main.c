@@ -1,65 +1,28 @@
 #include "minishell.h"
 
-const char *type_to_str(t_tkn_type type)
+void	print_pipeline(t_exec *pipeline)
 {
-	static const char *names[] = {
-		"WORD", "PIPE", "RED_IN", "RED_OUT", "HEREDOC", "APP_OUT"
-	};
+	t_exec	*tmp;
 
-	if (type >= 0 && type <= APP_OUT)
-		return names[type];
-	else
-		return "UNKNOWN";
-}
-
-void	print_here_doc(t_tkn *tkn)
-{
-	char	*buffer;
-	int		read_count;
-
-	printf("heredoc content :\n\n");
-	buffer = malloc(sizeof(char) * 101);
-	read_count = read(tkn->hd_fd, buffer, 100);
-	if (read_count == -1)
+	if (!pipeline)
 	{
-		puterrno("debug: read() failed lmao: ");
-		free(buffer);
+		printf("Empty pipeline\n");
 		return ;
 	}
-	buffer[read_count] = '\0';
-	while (read_count > 0)
-	{
-		printf("%s\n\n", buffer);
-		read_count = read(tkn->hd_fd, buffer, 100);
-		if (read_count == -1)
-		{
-			puterrno("debug: read() failed lmao: ");
-			free(buffer);
-			return ;
-		}
-		buffer[read_count] = '\0';
-	}
-	free(buffer);
+
 }
 
-void print_token_list(t_tkn *head)
+int	is_input_empty(char *input)
 {
-	t_tkn	*tmp;
-	if (!head)
+	int	i;
+
+	i = -1;
+	while (input[++i])
 	{
-		printf("Empty token list");
-		return;
+		if (c == ' ' && (c < '\t' || c > '\v'))
+			return (0);
 	}
-	tmp = head;
-	while (tmp)
-	{
-		printf("Type : [%s]     Token: [%s]\n", type_to_str(tmp->type), tmp->str);
-		if (tmp->type == HEREDOC)
-			print_here_doc(tmp);
-		tmp = tmp->next;
-	}
-	printf("----\n");
-	tkn_free(head);
+	return (1);
 }
 
 int	main(int ac, char **av, char **env)
@@ -74,6 +37,7 @@ int	main(int ac, char **av, char **env)
 	maxishell.exdata.exit_status = 0;
 	maxishell.exdata.pwd = 0;
 	maxishell.exdata.oldpwd = 0;
+	maxishell.pipeline = NULL;
 	update_pwd_env(&maxishell.exdata);
 	while (1)
 	{
@@ -84,22 +48,28 @@ int	main(int ac, char **av, char **env)
 			break;
 		if (*input)
 			add_history(input);
-		if (!ft_strncmp(input, "exit", 4))
+		if (!is_input_empty(input))
 		{
+			// to remove [
+			if (!ft_strncmp(input, "exit", 4))
+			{
+				free(input);
+				free_exdata(&maxishell.exdata);
+				return (0);
+			}
+			printf("Input : \"%s\"\n", input);
+			// ] to remove
+			maxishell.tokens = tokeniser(&maxishell, input);
 			free(input);
-			free_exdata(&maxishell.exdata);
-			return (0);
+			if (!maxishell.tokens)
+				break;
+			maxishell.pipeline = pipeline_builder(&maxishell.tokens);
+			if (!maxishell.pipeline)
+				break;
+			setup_signal(EXECUTION_MODE);
+			exit_handler(&maxishell.exdata);
+			status = execute_cmd(char *cmd, char **envp)
 		}
-		printf("Input : \"%s\"\n", input);
-		maxishell.tokens = tokeniser(&maxishell, input);
-		setup_signal(EXECUTION_MODE);
-		exit_handler(&maxishell.exdata);
-		/* status = execute_cmd(char *cmd, char **envp) */
-		if (maxishell.tokens)
-			print_token_list(maxishell.tokens);
-		// else
-		// 	printf("Tokenisation failed lol\n");
-		free(input);
 	}
 	free_exdata(&maxishell.exdata);
 	return (0);

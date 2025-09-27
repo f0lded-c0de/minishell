@@ -2,27 +2,16 @@
 # define CMD_LIST_H
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
-// enum
-typedef enum	e_exec_type {
-	SIMPLE,
-	COMPOUND,
-	PIPE_NODE,
-	AND_NODE,
-	OR_NODE
-}	t_exec_type;
-
 // struct
 typedef struct	s_exec {
-	void			*ptr;
-	t_exec_type		type;
-	struct s_exec	*left;
-	struct s_exec	*right;
-	int				fd_in;
-	int				fd_out;
+	char			**args;
+	struct s_exec	*next;
+	t_tkn			*redin;
+	t_tkn			*redout;
 }					t_exec;
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
-// tokenisation.c
+// cmd_list.c
 
 #endif

@@ -26,6 +26,7 @@ void	tkn_append(t_tkn **start, t_tkn *add)
 			tmp = tmp->next;
 		tmp->next = add;
 		add->prev = tmp;
+		add->next = NULL;
 	}
 	else
 		*start = add;
@@ -47,6 +48,20 @@ void	tkn_rm_next(t_tkn *tkn)
 				free(tmp->str);
 			free(tmp);
 		}
+	}
+}
+
+void	tkn_rm(t_tkn *tkn)
+{
+	if (tkn)
+	{
+		if (tkn->next)
+			tkn->next->prev = tkn->prev;
+		if (tkn->prev)
+			tkn->prev->next = tkn->next;
+		if (tkn->str)
+			free(tkn->str);
+		free(tkn);
 	}
 }
 
