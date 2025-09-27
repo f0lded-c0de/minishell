@@ -6,14 +6,10 @@
 typedef enum	e_tkn_type {
 	WORD,
 	PIPE,
-	OR,
-	AND,
 	RED_IN,
 	RED_OUT,
 	HEREDOC,
 	APP_OUT,
-	PAR_OPEN,
-	PAR_CLOSE,
 }	t_tkn_type;
 
 // struct

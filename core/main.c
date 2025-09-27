@@ -3,12 +3,10 @@
 const char *type_to_str(t_tkn_type type)
 {
 	static const char *names[] = {
-		"WORD", "PIPE", "OR", "AND",
-		"RED_IN", "RED_OUT", "HEREDOC", "APP_OUT",
-		"PAR_OPEN", "PAR_CLOSE"
+		"WORD", "PIPE", "RED_IN", "RED_OUT", "HEREDOC", "APP_OUT"
 	};
 
-	if (type >= 0 && type <= PAR_CLOSE)
+	if (type >= 0 && type <= APP_OUT)
 		return names[type];
 	else
 		return "UNKNOWN";

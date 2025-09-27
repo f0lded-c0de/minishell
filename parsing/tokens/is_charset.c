@@ -2,15 +2,14 @@
 
 int	is_operator(char c)
 {
-	if (c == '<' || c == '(' || c == ')' || c == '>'
-		|| c == '|' || c == '&')
+	if (c == '<' || c == '>' || c == '|')
 		return (1);
 	return (0);
 }
 
 int	is_double_operator(char c)
 {
-	if (c == '<' || c == '>' || c == '|' || c == '&')
+	if (c == '<' || c == '>')
 		return (1);
 	return (0);
 }

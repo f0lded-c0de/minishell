@@ -8,20 +8,12 @@ static void	type_assign(t_tkn *token)
 		token->type = APP_OUT;
 	else if (!ft_strncmp(token->str, "<<", 3))
 		token->type = HEREDOC;
-	else if (!ft_strncmp(token->str, "&&", 3))
-		token->type = AND;
-	else if (!ft_strncmp(token->str, "||", 3))
-		token->type = OR;
 	else if (!ft_strncmp(token->str, "<", 2))
 		token->type = RED_IN;
 	else if (!ft_strncmp(token->str, ">", 2))
 		token->type = RED_OUT;
 	else if (!ft_strncmp(token->str, "|", 2))
 		token->type = PIPE;
-	else if (!ft_strncmp(token->str, "(", 2))
-		token->type = PAR_OPEN;
-	else if (!ft_strncmp(token->str, ")", 2))
-		token->type = PAR_CLOSE;
 }
 
 static t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
@@ -112,6 +104,5 @@ t_tkn	*tokeniser(t_maxishell *maxishell, char *str)
 	maxishell->tokens = head;
 	if (!parse_here_docs(maxishell, head))
 		return (tkn_free(head), NULL);
-	check_par(&head);
 	return (head);
 }
