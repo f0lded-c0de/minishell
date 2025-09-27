@@ -14,7 +14,7 @@ typedef struct	s_delim_status {
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // heredocs.c
-int		parse_here_docs(char **env, t_tkn *head);
+int		parse_here_docs(t_maxishell *maxishell, t_tkn *head);
 
 // get_delim.c
 char	*get_delim(char *str);

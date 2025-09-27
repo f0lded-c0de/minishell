@@ -13,7 +13,18 @@ static void	child_setup_signal(void)
 	sigaction(SIGQUIT, &sa_quit, NULL);
 }
 
-static void	finish_hd(char **env, char *input, char *delim, int fd)
+static void	parent_setup_signal(struct sigaction *old_int)
+{
+	struct sigaction	ign;
+
+	ft_memset(old_int, 0, sizeof(*old_int));
+	ft_memset(&ign, 0, sizeof(ign));
+	ign.sa_handler = SIG_IGN;
+	ign.sa_flags = 0;
+	sigaction(SIGINT, &ign, old_int);
+}
+
+static void	finish_hd(t_maxishell *maxishell, char *input, char *delim, int fd)
 {
 	if (input)
 		free(input);
@@ -21,13 +32,24 @@ static void	finish_hd(char **env, char *input, char *delim, int fd)
 		puterrarg(HDC_WRN, delim);
 	free(delim);
 	close(fd);
-	free_split(env);
+	free_split(maxishell->exdata.env);
 }
 
-static void	read_hd(char **env, char *delim, int fd[2], int expand)
+static void	free_maxishell(t_maxishell *maxishell)
+{
+	if (maxishell->exdata.pwd)
+		free(maxishell->exdata.pwd);
+	if (maxishell->exdata.oldpwd)
+		free(maxishell->exdata.oldpwd);
+	if (maxishell->tokens)
+		tkn_free(maxishell->tokens);
+}
+
+static void	read_hd(t_maxishell *maxishell, char *delim, int fd[2], int expand)
 {
 	char	*input;
 
+	free_maxishell(maxishell);
 	close(fd[0]);
 	child_setup_signal();
 	while (1)
@@ -38,25 +60,26 @@ static void	read_hd(char **env, char *delim, int fd[2], int expand)
 		if (!ft_strcmp(input, delim))
 			break ;
 		if (expand)
-			input = ft_expand(env, input);
+			input = ft_expand(maxishell->exdata.env, input);
 		if (!input)
 		{
-			finish_hd(env, input, delim, fd[1]);
+			finish_hd(maxishell, input, delim, fd[1]);
 			exit(1);
 		}
 		write(fd[1], input, ft_strlen(input));
 		write(fd[1], "\n", 1);
 		free(input);
 	}
-	finish_hd(env, input, delim, fd[1]);
+	finish_hd(maxishell, input, delim, fd[1]);
 	exit(0);
 }
 
-static int	handle_here_doc(char **env, t_tkn *hd, int expand, char *delim)
+static int	handle_here_doc(t_maxishell *maxishell, t_tkn *hd, int expand, char *delim)
 {
 	int		fd[2];
 	int		pid;
 	int		status;
+	struct sigaction	old_int;
 
 	if (!delim)
 		return (0);
@@ -66,11 +89,12 @@ static int	handle_here_doc(char **env, t_tkn *hd, int expand, char *delim)
 	if (pid == -1)
 		return (free(delim), close_pipes(fd), puterrno(FRK_ERR), 0);
 	if (pid == 0)
-		read_hd(env, delim, fd, expand);
+		read_hd(maxishell, delim, fd, expand);
+	parent_setup_signal(&old_int);
 	close(fd[1]);
 	free(delim);
 	if (waitpid(pid, &status, 0) == -1)
-		return (printf("test lolol\n"), close(fd[0]), puterrno(WPD_ERR), 0);
+		return (close(fd[0]), puterrno(WPD_ERR), 0);
 	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
 	{
 		g_status = SIGINT;
@@ -78,11 +102,12 @@ static int	handle_here_doc(char **env, t_tkn *hd, int expand, char *delim)
 	}
 	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
 		return (close(fd[0]), puterr(WTF_ERR), 0);
+	sigaction(SIGINT,  &old_int,  NULL);
 	hd->hd_fd = fd[0];
 	return (1);
 }
 
-int	parse_here_docs(char **env, t_tkn *head)
+int	parse_here_docs(t_maxishell *maxishell, t_tkn *head)
 {
 	int	i;
 	int	expand;
@@ -99,7 +124,7 @@ int	parse_here_docs(char **env, t_tkn *head)
 					expand = 0;
 				i++;
 			}
-			if (!handle_here_doc(env, head, expand, get_delim(head->next->str)))
+			if (!handle_here_doc(maxishell, head, expand, get_delim(head->next->str)))
 				return (0);
 			tkn_rm_next(head);
 		}

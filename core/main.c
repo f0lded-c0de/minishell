@@ -66,22 +66,21 @@ void print_token_list(t_tkn *head)
 
 int	main(int ac, char **av, char **env)
 {
-	t_exdata	exdata;
-	t_tkn		*tokens;
+	t_maxishell	maxishell;
 	char		*input;
 	/* int			status; */
 
 	(void)ac;
 	(void)av;
-	exdata.env = split_cpy(env);
-	exdata.exit_status = 0;
-	exdata.pwd = 0;
-	exdata.oldpwd = 0;
-	update_pwd_env(&exdata);
+	maxishell.exdata.env = split_cpy(env);
+	maxishell.exdata.exit_status = 0;
+	maxishell.exdata.pwd = 0;
+	maxishell.exdata.oldpwd = 0;
+	update_pwd_env(&maxishell.exdata);
 	while (1)
 	{
 		setup_signal(INTERACTIVE_MODE);
-		exit_handler(&exdata);
+		exit_handler(&maxishell.exdata);
 		input = readline("Disc0Sh3ll$ ");
 		if (!input)
 			break;
@@ -90,20 +89,20 @@ int	main(int ac, char **av, char **env)
 		if (!ft_strncmp(input, "exit", 4))
 		{
 			free(input);
-			free_exdata(&exdata);
+			free_exdata(&maxishell.exdata);
 			return (0);
 		}
 		printf("Input : \"%s\"\n", input);
-		tokens = tokeniser(env, input);
+		maxishell.tokens = tokeniser(&maxishell, input);
 		setup_signal(EXECUTION_MODE);
-		exit_handler(&exdata);
+		exit_handler(&maxishell.exdata);
 		/* status = execute_cmd(char *cmd, char **envp) */
-		if (tokens)
-			print_token_list(tokens);
-		else
-			printf("Tokenisation failed lol\n");
+		if (maxishell.tokens)
+			print_token_list(maxishell.tokens);
+		// else
+		// 	printf("Tokenisation failed lol\n");
 		free(input);
 	}
-	free_exdata(&exdata);
+	free_exdata(&maxishell.exdata);
 	return (0);
 }

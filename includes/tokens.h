@@ -27,9 +27,9 @@ typedef struct	s_tkn {
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // tokenisation.c
-t_tkn	*tokeniser(char **env, char *str);
+t_tkn	*tokeniser(t_maxishell *maxishell, char *str);
 
-// tokens.c
+// utils.c
 t_tkn	*tkn_new(char *str);
 void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_rm_next(t_tkn *tkn);

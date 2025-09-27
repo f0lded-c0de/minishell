@@ -1,8 +1,6 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
-
-/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
-
+typedef struct	s_maxishell t_maxishell;
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard
@@ -21,6 +19,14 @@
 # include "libft.h"
 # include "parsing.h"
 # include "exec.h"
+
+
+/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
+
+typedef struct	s_maxishell {
+	t_exdata	exdata;
+	t_tkn		*tokens;
+}				t_maxishell;
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */

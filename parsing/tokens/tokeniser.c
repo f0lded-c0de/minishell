@@ -83,7 +83,7 @@ static int	parse_char_quote(t_tkn *head, char **tmp, char c, t_quote *quote)
 	return (1);
 }
 
-t_tkn	*tokeniser(char **env, char *str)
+t_tkn	*tokeniser(t_maxishell *maxishell, char *str)
 {
 	t_tkn	*head;
 	char	*tmp;
@@ -109,7 +109,8 @@ t_tkn	*tokeniser(char **env, char *str)
 	if (tmp)
 		head = token_delimiter(&head, &tmp, str[i]);
 	check_syntax(&head);
-	if (!parse_here_docs(env, head))
+	maxishell->tokens = head;
+	if (!parse_here_docs(maxishell, head))
 		return (tkn_free(head), NULL);
 	check_par(&head);
 	return (head);
