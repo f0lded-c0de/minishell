@@ -103,7 +103,6 @@ void	print_pipeline(t_exec *pipeline)
 		tmp = tmp->next;
 		i++;
 	}
-	exec_free(pipeline);
 }
 
 int	is_input_empty(char *input)
