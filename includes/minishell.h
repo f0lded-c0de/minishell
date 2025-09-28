@@ -56,6 +56,8 @@ void	run_token_test(const char *input);
 # define PIP_ERR "minishell: pipe failed: "
 # define FRK_ERR "minishell: fork failed: "
 # define WPD_ERR "minishell: waitpid failed: "
+# define OPN_ERR "minishell: open failed: "
+# define DUP_ERR "minishell: dup failed: "
 # define ENV_ERR "minishell: where tf your env at bro???"
 # define WTF_ERR "minishell: I have genuinely no clue what happened, sry bro"
 
