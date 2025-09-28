@@ -16,7 +16,7 @@ int	is_double_operator(char c)
 
 int	is_space(char c)
 {
-	if (c == ' ' || (c >= '\t' && c <= '\v')
+	if (c == ' ' || (c >= '\t' && c <= '\v'))
 		return (1);
 	return (0);
 }

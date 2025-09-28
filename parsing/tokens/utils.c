@@ -29,7 +29,11 @@ void	tkn_append(t_tkn **start, t_tkn *add)
 		add->next = NULL;
 	}
 	else
+	{
 		*start = add;
+		add->next = NULL;
+		add->prev = NULL;
+	}
 }
 
 void	tkn_rm_next(t_tkn *tkn)

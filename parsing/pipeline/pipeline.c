@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-static void	sub_parse_reds(t_tkn **full, t_tkn **red, t_tkn *tmp)
+static void	sub_parse_red(t_tkn **full, t_tkn **red, t_tkn *tmp)
 {
 	t_tkn	*word;
 
@@ -11,14 +11,14 @@ static void	sub_parse_reds(t_tkn **full, t_tkn **red, t_tkn *tmp)
 		if (word->next)
 			word->next->prev = tmp->prev;
 	}
-	else
+	if (!tmp->prev || tmp == *full)
 	{
-		*full = word->next;
-		if (word->next)
+		if (!tmp->prev && word->next)
 			word->next->prev = NULL;
+		*full = word->next;
 	}
-	tkn_append(&red, tmp);
-	tkn_append(&red, word);
+	tkn_append(red, tmp);
+	tkn_append(red, word);
 }
 
 static void	sub_parse_here_doc(t_tkn **full, t_tkn **red, t_tkn *tmp)
@@ -29,29 +29,41 @@ static void	sub_parse_here_doc(t_tkn **full, t_tkn **red, t_tkn *tmp)
 		if (tmp->next)
 			tmp->next->prev = tmp->prev;
 	}
-	else
+	if (!tmp->prev || tmp == *full)
 	{
-		*full = tmp->next;
-		if (tmp->next)
+		if (!tmp->prev && tmp->next)
 			tmp->next->prev = NULL;
+		*full = tmp->next;
 	}
-	tkn_append(&red, tmp);
+	tkn_append(red, tmp);
 }
 
 static void	parse_reds(t_tkn **head, t_tkn **redin, t_tkn **redout)
 {
 	t_tkn	*tmp;
+	t_tkn	*next;
 
 	tmp = *head;
 	while (tmp && tmp->type != PIPE)
 	{
 		if (tmp->type == RED_IN)
-			sub_parse_red(head, &redin, tmp);
-		if (tmp->type == HEREDOC)
-			sub_parse_here_doc(head, &redin, tmp);
-		if (tmp->type == RED_OUT || tmp->type == APP_OUT)
-			sub_parse_red(head, &redout, tmp);
-		tmp = tmp->next;
+		{
+			next = tmp->next->next;
+			sub_parse_red(head, redin, tmp);
+		}
+		else if (tmp->type == HEREDOC)
+		{
+			next = tmp->next;
+			sub_parse_here_doc(head, redin, tmp);
+		}
+		else if (tmp->type == RED_OUT || tmp->type == APP_OUT)
+		{
+			next = tmp->next->next;
+			sub_parse_red(head, redout, tmp);
+		}
+		else
+			next = tmp->next;
+		tmp = next;
 	}
 }
 
@@ -68,7 +80,7 @@ static char	**parse_args(t_tkn *head)
 		i++;
 		tmp = tmp->next;
 	}
-	args = malloc(sizeof(char) * i);
+	args = malloc(sizeof(char *) * i);
 	if (!args)
 		return (puterr(MLC_ERR), NULL);
 	i = 0;
@@ -87,10 +99,9 @@ static char	**parse_args(t_tkn *head)
 t_exec	*pipeline_builder(t_tkn **tkn_head)
 {
 	t_exec	*cmd_head;
+	t_tkn	*fake_head;
 
-	redin = NULL;
-	redout = NULL;
-	cmd_head = malloc(sizeof(t_exec));
+	cmd_head = exec_new();
 	if (!cmd_head)
 		return (NULL);
 	parse_reds(tkn_head, &cmd_head->redin, &cmd_head->redout);
@@ -102,9 +113,10 @@ t_exec	*pipeline_builder(t_tkn **tkn_head)
 	}
 	else
 		cmd_head->args = NULL;
-	if (get_next_pipe(*tkn_head))
+	fake_head = get_next_pipe(*tkn_head);
+	if (fake_head)
 	{
-		cmd_head->next = pipeline_builder(get_next_pipe(*tkn_head)->next);
+		cmd_head->next = pipeline_builder(&fake_head);
 		if (!cmd_head->next)
 			return (exec_free(cmd_head), tkn_free(*tkn_head), NULL);
 	}

@@ -12,6 +12,12 @@ typedef struct	s_exec {
 
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
-// cmd_list.c
+// pipeline.c
+t_exec	*pipeline_builder(t_tkn **tkn_head);
+
+// utils.c
+t_exec	*exec_new(void);
+void	exec_free(t_exec *cmd);
+t_tkn	*get_next_pipe(t_tkn *head);
 
 #endif
