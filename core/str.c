@@ -79,4 +79,6 @@ void	free_exdata(t_exdata *exdata)
 		free(exdata->pwd);
 	if (exdata->oldpwd)
 		free(exdata->oldpwd);
+	if (exdata->pid)
+		free(exdata->pid);
 }

@@ -11,6 +11,7 @@ t_exec	*exec_new(void)
 	new->redin = NULL;
 	new->redout = NULL;
 	new->next = NULL;
+	new->prev = NULL;
 	return (new);
 }
 
@@ -18,6 +19,8 @@ void	exec_free(t_exec *cmd)
 {
 	t_exec *tmp;
 
+	while (cmd && cmd->prev)
+		cmd = cmd->prev;
 	while (cmd)
 	{
 		tmp = cmd->next;

@@ -130,7 +130,8 @@ int	main(int ac, char **av, char **env)
 	maxishell.exdata.pwd = 0;
 	maxishell.exdata.oldpwd = 0;
 	maxishell.pipeline = NULL;
-	// maxishell.exdata.status = 0;
+	maxishell.exdata.exit_status = 0;
+	maxishell.exdata.pid = NULL;
 	update_pwd_env(&maxishell.exdata);
 	while (1)
 	{
@@ -143,29 +144,22 @@ int	main(int ac, char **av, char **env)
 			add_history(input);
 		if (!is_input_empty(input))
 		{
-			// to remove [
-			if (!ft_strncmp(input, "exit", 4))
-			{
-				free(input);
-				free_exdata(&maxishell.exdata);
-				return (0);
-			}
-			printf("Input : \"%s\"\n", input);
-			// ] to remove
 			maxishell.tokens = tokeniser(&maxishell, input);
 			free(input);
 			if (maxishell.tokens)
 			{
-				maxishell.pipeline = pipeline_builder(&maxishell.tokens);
+				maxishell.pipeline = pipeline_builder(&maxishell.tokens, NULL);
+				tkn_free(maxishell.tokens);
 				if (maxishell.pipeline)
 				{
-					print_pipeline(maxishell.pipeline);
-					exec_free(maxishell.pipeline);
 					setup_signal(EXECUTION_MODE);
 					exit_handler(&maxishell.exdata);
-					// status = execute_cmd(char *cmd, char **envp)
+					maxishell.exdata.exit_status
+						= exec_pipeline(maxishell.pipeline, &maxishell.exdata);
+					exec_free(maxishell.pipeline);
+					if (maxishell.exdata.pid)
+						free(maxishell.exdata.pid);
 				}
-				tkn_free(maxishell.tokens);
 			}
 		}
 	}

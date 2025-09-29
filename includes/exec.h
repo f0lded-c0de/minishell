@@ -9,6 +9,7 @@ typedef struct s_exdata
 	char	*oldpwd;
 	char	**env;
 	int		exit_status;
+	int		*pid;
 }	t_exdata;
 
 extern int	g_status;
@@ -23,6 +24,11 @@ extern int	g_status;
 # include <signal.h>
 # include <readline/readline.h>
 # include <readline/history.h>
+# include <sys/stat.h>
+# include <fcntl.h>
+
+// Custom
+# include "exec_pipeline.h"
 
 // Defines
 # define SHELL_NAME "Disc0Sh3ll"
@@ -40,7 +46,7 @@ int					ft_pwd(void);
 int					update_pwd_env(t_exdata *shell);
 
 // Builtins Environment Management
-int					t_env(char **env);
+int					ft_env(char **env);
 int					ft_unset(t_exdata *shell, char **args);
 int					ft_export(t_exdata *shell, char **args);
 void				handle_env(char **env);

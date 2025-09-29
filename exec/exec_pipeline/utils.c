@@ -1,6 +1,6 @@
 #include "minishell.h"
 
-t_bltn	is_bltn(char *str);
+t_bltn	is_bltn(char *str)
 {
 	if (!ft_strncmp(str, "cd", 3))
 		return (CD);
@@ -16,5 +16,18 @@ t_bltn	is_bltn(char *str);
 		return (PWD);
 	if (!ft_strncmp(str, "unset", 6))
 		return (UNSET);
-	return (NOT_BLTN)
+	return (NOT_BLTN);
+}
+
+int	get_cmd_count(t_exec *pipeline)
+{
+	int	i;
+
+	i = 0;
+	while (pipeline)
+	{
+		pipeline = pipeline->next;
+		i++;
+	}
+	return (i);
 }

@@ -24,22 +24,27 @@ int	ft_exit(int ac, char **args)
 	if (ac > 2)
 	{
 		write(2, "exit: too many arguments\n", 25);
+		free_split(args);
 		return (1);
 	}
-	if (ac == 2) 
+	if (ac == 2)
 	{
 		if (!ft_strisdigit(args[1]))
 		{
 			write(2, "exit: numeric argument required\n", 32);
+			free_split(args);
 			exit(2);
 		}
 		exit_code = ft_atoull(args[1]);
 		if (exit_code >= LLONG_MAX)
 		{
 			write(2, "exit: numeric argument required\n", 32);
+			free_split(args);
 			exit(2);
 		}
+		free_split(args);
 		exit((int)exit_code);
 	}
+	free_split(args);
 	exit(0);
 }

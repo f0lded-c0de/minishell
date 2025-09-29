@@ -53,11 +53,13 @@ void	run_token_test(const char *input);
 # define PAR_ERR "minishell: bad syntax: unclosed parenthesis"
 # define TKN_ERR "minishell: bad syntax: error near unexpected token "
 # define HDC_WRN "minishell: warning: here_doc ended with end-of-file, expected "
+# define PAT_ERR "minishell: command not found: "
 # define PIP_ERR "minishell: pipe failed: "
 # define FRK_ERR "minishell: fork failed: "
 # define WPD_ERR "minishell: waitpid failed: "
 # define OPN_ERR "minishell: open failed: "
 # define DUP_ERR "minishell: dup failed: "
+# define EXV_ERR "minishell: execve failed: "
 # define ENV_ERR "minishell: where tf your env at bro???"
 # define WTF_ERR "minishell: I have genuinely no clue what happened, sry bro"
 

@@ -12,20 +12,28 @@ static int	get_ac(char **av)
 
 int	exec_bltn(t_exec *pipeline, t_exdata *exdata)
 {
-	if (!ft_strncmp(str, "cd", 3))
-		return (fd_cd(exdata, get_ac(pipeline->args), pipeline->args));
-	if (!ft_strncmp(str, "echo", 5))
-		return (ECHO);
-	if (!ft_strncmp(str, "env", 4))
-		return (ENV);
-	if (!ft_strncmp(str, "exit", 5))
-		return (EXIT);
-	if (!ft_strncmp(str, "export", 7))
-		return (EXPORT);
-	if (!ft_strncmp(str, "pwd", 4))
-		return (PWD);
-	if (!ft_strncmp(str, "unset", 6))
-		return (UNSET);
+	char **args;
+
+	if (!ft_strncmp(pipeline->args[0], "cd", 3))
+		return (ft_cd(exdata, get_ac(pipeline->args), pipeline->args));
+	if (!ft_strncmp(pipeline->args[0], "echo", 5))
+		return (ft_echo(&pipeline->args[1]));
+	if (!ft_strncmp(pipeline->args[0], "env", 4))
+		return (ft_env(exdata->env));
+	if (!ft_strncmp(pipeline->args[0], "exit", 5))
+	{
+		args = pipeline->args;
+		pipeline->args = NULL;
+		return (free_exdata(exdata), exec_free(pipeline),
+				ft_exit(get_ac(args), args));
+	}
+	if (!ft_strncmp(pipeline->args[0], "export", 7))
+		return (ft_export(exdata, pipeline->args));
+	if (!ft_strncmp(pipeline->args[0], "pwd", 4))
+		return (ft_pwd());
+	if (!ft_strncmp(pipeline->args[0], "unset", 6))
+		return (ft_unset(exdata, pipeline->args));
+	return (puterr("Wtf happened here???"), 1);
 }
 
 static void	nullinit_tmp(int *a, int *b)
@@ -40,10 +48,10 @@ int	forkless_bltn(t_exec *pipeline, t_exdata *exdata)
 	int	tmpout;
 	int	ret;
 
-	nullinit_tmp(&tmpin, &tmpout)
-	if (pipeline->redins)
+	nullinit_tmp(&tmpin, &tmpout);
+	if (pipeline->redin)
 		tmpin = dup(STDIN_FILENO);
-	if (pipeline->redouts)
+	if (pipeline->redout)
 		tmpout = dup(STDOUT_FILENO);
 	ret = handle_redirs(pipeline);
 	if (ret)

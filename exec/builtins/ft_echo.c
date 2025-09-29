@@ -7,7 +7,7 @@ int	ft_echo(char **args)
 
 	i = 0;
 	newline = 1;
-	if (args && args[0] && ft_strncmp(args[0], "-n", 2) == 0)
+	if (args && args[0] && ft_strncmp(args[0], "-n", 3) == 0)
 	{
 		newline = 0;
 		i++;

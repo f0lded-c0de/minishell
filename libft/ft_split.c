@@ -50,7 +50,7 @@ static char	*ft_copy(const char *s, int start, int end)
 	return (new);
 }
 
-void	free_split(char **split)
+static void	free_split(char **split)
 {
 	int	i;
 

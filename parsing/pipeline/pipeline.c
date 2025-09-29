@@ -96,7 +96,7 @@ static char	**parse_args(t_tkn *head)
 	return (args);
 }
 
-t_exec	*pipeline_builder(t_tkn **tkn_head)
+t_exec	*pipeline_builder(t_tkn **tkn_head, t_exec *prev)
 {
 	t_exec	*cmd_head;
 	t_tkn	*fake_head;
@@ -104,6 +104,7 @@ t_exec	*pipeline_builder(t_tkn **tkn_head)
 	cmd_head = exec_new();
 	if (!cmd_head)
 		return (NULL);
+	cmd_head->prev = prev;
 	parse_reds(tkn_head, &cmd_head->redin, &cmd_head->redout);
 	if (*tkn_head && (*tkn_head)->type != PIPE)
 	{
@@ -116,7 +117,7 @@ t_exec	*pipeline_builder(t_tkn **tkn_head)
 	fake_head = get_next_pipe(*tkn_head);
 	if (fake_head)
 	{
-		cmd_head->next = pipeline_builder(&fake_head);
+		cmd_head->next = pipeline_builder(&fake_head, cmd_head);
 		if (!cmd_head->next)
 			return (exec_free(cmd_head), tkn_free(*tkn_head), NULL);
 	}
