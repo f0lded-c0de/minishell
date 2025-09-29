@@ -60,7 +60,7 @@ static void	read_hd(t_maxishell *maxishell, char *delim, int fd[2], int expand)
 		if (!ft_strcmp(input, delim))
 			break ;
 		if (expand)
-			input = ft_expand(maxishell->exdata.env, input);
+			input = ft_expand(&maxishell->exdata, input);
 		if (!input)
 		{
 			finish_hd(maxishell, input, delim, fd[1]);

@@ -13,6 +13,13 @@ static void	frexit(t_exec *pl, t_exdata *ex, int pipe[2], int fd_in)
 	exit(EXIT_FAILURE);
 }
 
+static int	brexit(t_exec *pipeline, t_exdata *exdata, int i)
+{
+	exec_free(pipeline);
+	free_exdata(exdata);
+	exit(i);
+}
+
 static void	handle_child(t_exec *pipeline, t_exdata *exdata, int pipe[2], int fd_in)
 {
 	if (pipe[1] != -1)
@@ -34,10 +41,10 @@ static void	handle_child(t_exec *pipeline, t_exdata *exdata, int pipe[2], int fd
 		}
 		close(fd_in);
 	}
-	if (!handle_redirs(pipeline))
+	if (!handle_redirs(pipeline, exdata))
 			frexit(pipeline, exdata, NULL, -1);
 	if (pipeline->args && is_bltn(pipeline->args[0]))
-		exit(exec_bltn(pipeline, exdata));
+		brexit(pipeline, exdata, exec_bltn(pipeline, exdata));
 	else
 		exec_cmd(pipeline, exdata);
 }

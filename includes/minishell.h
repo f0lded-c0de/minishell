@@ -1,6 +1,7 @@
 #ifndef MINISHELL_H
 # define MINISHELL_H
 typedef struct	s_maxishell t_maxishell;
+typedef struct	s_exdata	t_exdata;
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard

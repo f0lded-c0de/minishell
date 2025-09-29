@@ -8,7 +8,7 @@ static char	*handle_unexpand(char *str, char *res, int i, int j)
 
 	tmp = malloc(sizeof(char) * ((j - i) + 1));
 	if (!tmp)
-		return (puterr(MLC_ERR), NULL);
+		return (puterr(MLC_ERR), free(res), NULL);
 	k = -1;
 	while ((++k + i) < j)
 		tmp[k] = str[i + k];
@@ -21,10 +21,21 @@ static char	*handle_unexpand(char *str, char *res, int i, int j)
 	return (dst);
 }
 
-/* static char	*handle_question(char *str, char *res, int i, int j) */
-/* { */
-/**/
-/* } */
+static char	*handle_question(char *res, int exit_status)
+{
+	char *dst;
+	char *tmp;
+
+	tmp = ft_itoa(exit_status);
+	if (!tmp)
+		return (puterr(MLC_ERR), free(res), NULL);
+	dst = ft_strjoin(res, tmp);
+	free(res);
+	free(tmp);
+	if (!dst)
+		puterr(MLC_ERR);
+	return (dst);
+}
 
 static int	is_still_name(char *str, int i[2])
 {
@@ -110,7 +121,7 @@ static char	*handle_expand(char **env, char *str, char *res, int i[2])
 	return (dst);
 }
 
-char	*ft_expand(char **env, char *str)
+char	*ft_expand(t_exdata *exdata, char *str)
 {
 	char	*res;
 	int		expand;
@@ -136,16 +147,17 @@ char	*ft_expand(char **env, char *str)
 				i[0] = i[1];
 			}
 		}
-		/* else if (expand == 1 && i[1] - i[0] == 1 && str[i[1]] == '?') */
-		/* { */
-		/* 	expand = 0; */
-		/* 	res = handle_question(str, res, whatever_the_fuck_we_need_for_that); */
-		/* 	i[0] = i[1] + 1; */
-		/* } */
-		else if (expand == 1 && !is_still_name(str, i))
+		else if (expand == 1 && i[1] - i[0] == 1 && str[i[1]] == '?')
 		{
 			expand = 0;
-			res = handle_expand(env, str, res, i);
+			res = handle_question(res, exdata->exit_status);
+			i[0] = i[1] + 1;
+		}
+		else if (expand == 1 && !is_still_name(str, i))
+		{
+			if (str[i[1]] != '$')
+				expand = 0;
+			res = handle_expand(exdata->env, str, res, i);
 			if (!res)
 				return (puterr(MLC_ERR), NULL);
 			i[0] = i[1];
@@ -155,7 +167,7 @@ char	*ft_expand(char **env, char *str)
 	if (expand == 0 && i[0] != i[1])
 		res = handle_unexpand(str, res, i[0], i[1]);
 	else if (expand == 1 && i[0] != i[1])
-		res = handle_expand(env, str, res, i);
+		res = handle_expand(exdata->env, str, res, i);
 	free(str);
 	return (res);
 }

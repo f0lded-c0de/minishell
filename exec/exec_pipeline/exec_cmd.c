@@ -17,7 +17,7 @@ void	exec_cmd(t_exec *pipeline, t_exdata *exdata)
 
 	if (!pipeline->args)
 		frexit(pipeline, exdata, NULL);
-	pipeline->args = unquote(exdata->env, pipeline->args);
+	pipeline->args = unquote(exdata, pipeline->args);
 	if (!pipeline->args)
 		frexit(pipeline, exdata, NULL);
 	path = get_cmd_path(pipeline->args[0], exdata->env);

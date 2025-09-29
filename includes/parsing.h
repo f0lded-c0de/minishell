@@ -11,7 +11,7 @@ typedef enum	e_quote {
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // expand.c
-char	*ft_expand(char **env, char *str);
+char	*ft_expand(t_exdata *exdata, char *str);
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Custom

@@ -24,7 +24,7 @@ t_bltn	is_bltn(char *str);
 int		get_cmd_count(t_exec *pipeline);
 
 // redirs.c
-int		handle_redirs(t_exec *pipeline);
+int		handle_redirs(t_exec *pipeline, t_exdata *exdata);
 
 // path.c
 char	*get_cmd_path(char *cmd, char **envp);
@@ -38,6 +38,6 @@ int		get_ac(char **av);
 void	exec_cmd(t_exec *pipeline, t_exdata *exdata);
 
 // quote.c
-char	**unquote(char **env, char **args);
+char	**unquote(t_exdata *exdata, char **args);
 
 #endif

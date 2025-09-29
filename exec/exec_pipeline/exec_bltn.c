@@ -14,7 +14,7 @@ int	exec_bltn(t_exec *pipeline, t_exdata *exdata)
 {
 	char **args;
 
-	pipeline->args = unquote(exdata->env, pipeline->args);
+	pipeline->args = unquote(exdata, pipeline->args);
 	if (!pipeline->args)
 		return (1);
 	if (!ft_strncmp(pipeline->args[0], "cd", 3))
@@ -56,7 +56,7 @@ int	forkless_bltn(t_exec *pipeline, t_exdata *exdata)
 		tmpin = dup(STDIN_FILENO);
 	if (pipeline->redout)
 		tmpout = dup(STDOUT_FILENO);
-	ret = handle_redirs(pipeline);
+	ret = handle_redirs(pipeline, exdata);
 	if (ret)
 		ret = exec_bltn(pipeline, exdata);
 	if (tmpin)
