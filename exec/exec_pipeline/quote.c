@@ -28,33 +28,33 @@ static char	**split_append(char **src, char **add)
 	return (free(src), free(add), res);
 }
 
-static char	*split_to_str(char **split)
-{
-	char	*res;
-	int		size;
-	int		i;
-	int		j;
-	int		k;
-
-	size = 0;
-	k = -1;
-	while (split[++k])
-		size += ft_strlen(split[k]);
-	res = malloc(sizeof(char) * (size + 1));
-	if (!res)
-		return (puterr(MLC_ERR), free_split(split), NULL);
-	i = 0;
-	k = -1;
-	while (split[++k])
-	{
-		j = -1;
-		while (split[k][++j])
-			res[i++] = split[k][j];
-	}
-	res[i] = '\0';
-	free_split(split);
-	return (res);
-}
+// static char	*split_to_str(char **split)
+// {
+// 	char	*res;
+// 	int		size;
+// 	int		i;
+// 	int		j;
+// 	int		k;
+//
+// 	size = 0;
+// 	k = -1;
+// 	while (split[++k])
+// 		size += ft_strlen(split[k]);
+// 	res = malloc(sizeof(char) * (size + 1));
+// 	if (!res)
+// 		return (puterr(MLC_ERR), free_split(split), NULL);
+// 	i = 0;
+// 	k = -1;
+// 	while (split[++k])
+// 	{
+// 		j = -1;
+// 		while (split[k][++j])
+// 			res[i++] = split[k][j];
+// 	}
+// 	res[i] = '\0';
+// 	free_split(split);
+// 	return (res);
+// }
 
 static char	**unquote_arg(char **env, char *str)
 {
