@@ -20,25 +20,13 @@ void	exit_handler(t_exdata *shell)
 		shell->exit_status = 131;
 }
 
-void	setup_signal(int mode)
+void	setup_signal(void)
 {
-	struct sigaction sa_int;
-	struct sigaction sa_quit;
+	struct sigaction sa;
 
-	ft_memset(&sa_int, 0, sizeof(sa_int));
-	ft_memset(&sa_quit, 0, sizeof(sa_quit));
-	sa_int.sa_handler = handle_sigint;
-	sa_int.sa_flags = 0;
-	sigemptyset(&sa_int.sa_mask);
-	sa_quit.sa_flags = 0;
-	sigemptyset(&sa_quit.sa_mask);
-	if (mode == INTERACTIVE_MODE)
-		sa_quit.sa_handler = SIG_IGN;
-	else if (mode == EXECUTION_MODE)
-	{
-		sa_int.sa_handler = SIG_DFL;
-		sa_quit.sa_handler = SIG_DFL;
-	}
-	sigaction(SIGINT, &sa_int, NULL);
-	sigaction(SIGQUIT, &sa_quit, NULL);
+	sa.sa_handler = handle_sigint;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	signal(SIGQUIT, SIG_IGN);
 }

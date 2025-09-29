@@ -57,7 +57,7 @@ unsigned long long	ft_atoull(const char *str);
 
 // Signal Handling
 void				handle_sigint(int sig);
-void				setup_signal(int mode);
+void				setup_signal(void);
 void				exit_handler(t_exdata *shell);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */

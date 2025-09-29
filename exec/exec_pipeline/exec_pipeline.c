@@ -20,6 +20,32 @@ static int	brexit(t_exec *pipeline, t_exdata *exdata, int i)
 	exit(i);
 }
 
+static void	child_signal(int sig)
+{
+	g_status = sig;
+	if (sig == SIGINT)
+	{
+		puterr("");
+		return ;
+	}
+	if (sig == SIGQUIT)
+	{
+		puterr("Quit (core dumped)");
+		return ;
+	}
+}
+
+static void	child_setup_signal(void)
+{
+	struct sigaction	sa;
+
+	sa.sa_handler = child_signal;
+	sigemptyset(&sa.sa_mask);
+	sa.sa_flags = SA_RESTART;
+	sigaction(SIGINT, &sa, NULL);
+	sigaction(SIGQUIT, &sa, NULL);
+}
+
 static void	handle_child(t_exec *pipeline, t_exdata *exdata, int pipe[2], int fd_in)
 {
 	if (pipe[1] != -1)
@@ -80,6 +106,7 @@ int	exec_pipeline(t_exec *pipeline, t_exdata *exdata)
 					break ;
 				}
 			}
+			child_setup_signal();
 			exdata->pid[i] = fork();
 			if (exdata->pid[i] == -1)
 			{
@@ -106,6 +133,7 @@ int	exec_pipeline(t_exec *pipeline, t_exdata *exdata)
 		i = -1;
 		while (++i < cmd_count)
 			waitpid(exdata->pid[i], &status, 0);
+		setup_signal();
 		if (WIFEXITED(status))
 			return (WEXITSTATUS(status));
 		else if (WIFSIGNALED(status))

@@ -135,7 +135,7 @@ int	main(int ac, char **av, char **env)
 	update_pwd_env(&maxishell.exdata);
 	while (1)
 	{
-		setup_signal(INTERACTIVE_MODE);
+		setup_signal();
 		exit_handler(&maxishell.exdata);
 		input = readline("Disc0Sh3ll$ ");
 		if (!input)
@@ -152,7 +152,6 @@ int	main(int ac, char **av, char **env)
 				tkn_free(maxishell.tokens);
 				if (maxishell.pipeline)
 				{
-					setup_signal(EXECUTION_MODE);
 					exit_handler(&maxishell.exdata);
 					maxishell.exdata.exit_status
 						= exec_pipeline(maxishell.pipeline, &maxishell.exdata);
