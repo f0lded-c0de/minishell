@@ -1,11 +1,11 @@
 #include "minishell.h"
 
-static int	get_ac(char **av)
+int	get_ac(char **av)
 {
 	int	i;
 
 	i = 0;
-	while (av[i])
+	while (av && av[i])
 		i++;
 	return (i);
 }
@@ -14,6 +14,9 @@ int	exec_bltn(t_exec *pipeline, t_exdata *exdata)
 {
 	char **args;
 
+	pipeline->args = unquote(exdata->env, pipeline->args);
+	if (!pipeline->args)
+		return (1);
 	if (!ft_strncmp(pipeline->args[0], "cd", 3))
 		return (ft_cd(exdata, get_ac(pipeline->args), pipeline->args));
 	if (!ft_strncmp(pipeline->args[0], "echo", 5))

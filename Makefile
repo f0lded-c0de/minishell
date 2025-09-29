@@ -12,6 +12,7 @@ SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		exec/exec_pipeline/exec_bltn.c exec/exec_pipeline/exec_cmd.c \
 		exec/exec_pipeline/exec_pipeline.c exec/exec_pipeline/path.c \
 		exec/exec_pipeline/redirs.c exec/exec_pipeline/utils.c \
+		exec/exec_pipeline/quote.c \
 		exec/signal.c \
 		core/main.c core/errors.c core/str.c
 
