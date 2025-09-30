@@ -1,5 +1,6 @@
 SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		parsing/tokens/tokeniser.c parsing/tokens/utils.c \
+		parsing/tokens/utils2.c \
 		parsing/heredocs/get_delim.c parsing/heredocs/heredocs.c \
 		parsing/heredocs/utils.c \
 		parsing/expand/expand.c parsing/expand/expand_utils.c \

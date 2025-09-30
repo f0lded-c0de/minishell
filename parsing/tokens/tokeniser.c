@@ -28,7 +28,7 @@ static void	type_assign(t_tkn *token)
 		token->type = PIPE;
 }
 
-static t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
+t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c)
 {
 	t_tkn	*new;
 
@@ -52,15 +52,10 @@ static int	parse_char_unquote(t_tkn **head, char **tmp, char c, t_quote *quote)
 			return (tkn_free(*head), 0);
 	}
 	else if (*tmp && (is_operator(str_last_c(*tmp))
-				|| is_operator(c) || is_space(c)))
+			|| is_operator(c) || is_space(c)))
 	{
-		*head = token_delimiter(head, tmp, c);
-		if (!*head)
+		if (!sub_parse_char_unq(head, tmp, c, quote))
 			return (0);
-		if (c == '\'')
-			*quote = SINGLE;
-		if (c == '"')
-			*quote = DOUBLE;
 	}
 	else if (!is_space(c))
 	{
@@ -96,10 +91,7 @@ t_tkn	*tokeniser(t_maxishell *maxishell, char *str)
 
 	if (!str[0] || !check_unclosed(str))
 		return (NULL);
-	head = NULL;
-	tmp = NULL;
-	quote = NONE;
-	i = -1;
+	null_init_tokeniser(&head, &tmp, &quote, &i);
 	while (str[++i])
 	{
 		if (quote == NONE)

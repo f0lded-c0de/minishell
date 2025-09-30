@@ -13,6 +13,7 @@
 #ifndef HEREDOCS_H
 # define HEREDOCS_H
 
+typedef struct s_maxishell	t_maxishell;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // struct
 typedef struct	s_delim_status {
@@ -34,6 +35,9 @@ char	*get_delim(char *str);
 // utils.c
 int		ft_strcmp(char *s1, char *s2);
 void	close_pipes(int pipe[2]);
+void	finish_hd(t_maxishell *maxishell, char *input, char *delim, int fd);
+void	hd_parent_setup_signal(struct sigaction *old_int);
+void	hd_child_setup_signal(void);
 
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */

@@ -12,41 +12,6 @@
 
 #include "minishell.h"
 
-static void	hd_child_setup_signal(void)
-{
-	struct sigaction	sa_int;
-	struct sigaction	sa_quit;
-
-	ft_memset(&sa_int, 0, sizeof(sa_int));
-	ft_memset(&sa_quit, 0, sizeof(sa_quit));
-	sa_int.sa_handler = SIG_DFL;
-	sa_quit.sa_handler = SIG_IGN;
-	sigaction(SIGINT, &sa_int, NULL);
-	sigaction(SIGQUIT, &sa_quit, NULL);
-}
-
-static void	parent_setup_signal(struct sigaction *old_int)
-{
-	struct sigaction	ign;
-
-	ft_memset(old_int, 0, sizeof(*old_int));
-	ft_memset(&ign, 0, sizeof(ign));
-	ign.sa_handler = SIG_IGN;
-	ign.sa_flags = 0;
-	sigaction(SIGINT, &ign, old_int);
-}
-
-static void	finish_hd(t_maxishell *maxishell, char *input, char *delim, int fd)
-{
-	if (input)
-		free(input);
-	else
-		puterrarg(HDC_WRN, delim);
-	free(delim);
-	close(fd);
-	free_split(maxishell->exdata.env);
-}
-
 static void	free_maxishell(t_maxishell *maxishell)
 {
 	if (maxishell->exdata.pwd)
@@ -86,11 +51,25 @@ static void	read_hd(t_maxishell *maxishell, char *delim, int fd[2], int expand)
 	exit(0);
 }
 
-static int	handle_here_doc(t_maxishell *maxishell, t_tkn *hd, int expand, char *delim)
+int	sub_here_doc(int pid, int *status, int fd[2])
 {
-	int		fd[2];
-	int		pid;
-	int		status;
+	if (waitpid(pid, status, 0) == -1)
+		return (close(fd[0]), puterrno(WPD_ERR), 0);
+	if (WIFSIGNALED(*status) && WTERMSIG(*status) == SIGINT)
+	{
+		g_status = SIGINT;
+		return (close(fd[0]), 0);
+	}
+	if (!WIFEXITED(*status) || WEXITSTATUS(*status) != 0)
+		return (close(fd[0]), puterr(WTF_ERR), 0);
+	return (1);
+}
+
+static int	handle_here_doc(t_maxishell *mxsh, t_tkn *hd, int exp, char *delim)
+{
+	int					fd[2];
+	int					pid;
+	int					status;
 	struct sigaction	old_int;
 
 	if (!delim)
@@ -101,20 +80,13 @@ static int	handle_here_doc(t_maxishell *maxishell, t_tkn *hd, int expand, char *
 	if (pid == -1)
 		return (free(delim), close_pipes(fd), puterrno(FRK_ERR), 0);
 	if (pid == 0)
-		read_hd(maxishell, delim, fd, expand);
-	parent_setup_signal(&old_int);
+		read_hd(mxsh, delim, fd, exp);
+	hd_parent_setup_signal(&old_int);
 	close(fd[1]);
 	free(delim);
-	if (waitpid(pid, &status, 0) == -1)
-		return (close(fd[0]), puterrno(WPD_ERR), 0);
-	if (WIFSIGNALED(status) && WTERMSIG(status) == SIGINT)
-	{
-		g_status = SIGINT;
-		return (close(fd[0]), 0);
-	}
-	if (!WIFEXITED(status) || WEXITSTATUS(status) != 0)
-		return (close(fd[0]), puterr(WTF_ERR), 0);
-	sigaction(SIGINT,  &old_int,  NULL);
+	if (!sub_here_doc(pid, &status, fd))
+		return (0);
+	sigaction(SIGINT, &old_int, NULL);
 	hd->hd_fd = fd[0];
 	return (1);
 }
@@ -136,7 +108,8 @@ int	parse_here_docs(t_maxishell *maxishell, t_tkn *head)
 					expand = 0;
 				i++;
 			}
-			if (!handle_here_doc(maxishell, head, expand, get_delim(head->next->str)))
+			if (!handle_here_doc(maxishell, head, expand,
+					get_delim(head->next->str)))
 				return (0);
 			tkn_rm_next(head);
 		}

@@ -12,8 +12,6 @@
 
 #ifndef MINISHELL_H
 # define MINISHELL_H
-typedef struct	s_maxishell t_maxishell;
-typedef struct	s_exdata	t_exdata;
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard
@@ -34,15 +32,14 @@ typedef struct	s_exdata	t_exdata;
 # include "parsing.h"
 # include "exec.h"
 
-
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 
-typedef struct	s_maxishell {
+typedef struct s_maxishell
+{
 	t_exdata	exdata;
 	t_tkn		*tokens;
 	t_exec		*pipeline;
 }				t_maxishell;
-
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // errors.c
@@ -80,6 +77,5 @@ void	run_token_test(const char *input);
 # define ENV_ERR "disc0: where tf your env at bro???"
 # define WTF_ERR "disc0: I have genuinely no clue what happened, sry bro"
 # define CD_ARGS_ERR "disc0: cd: too many arguments"
-
 
 #endif

@@ -29,7 +29,7 @@ t_exec	*exec_new(void)
 
 void	exec_free(t_exec *cmd)
 {
-	t_exec *tmp;
+	t_exec	*tmp;
 
 	while (cmd && cmd->prev)
 		cmd = cmd->prev;

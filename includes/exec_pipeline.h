@@ -15,7 +15,8 @@
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // struct
-typedef enum	e_bltn {
+typedef enum e_bltn
+{
 	NOT_BLTN,
 	CD,
 	ECHO,
@@ -26,7 +27,8 @@ typedef enum	e_bltn {
 	UNSET
 }					t_bltn;
 
-typedef struct	s_quote_data {
+typedef struct s_quote_data
+{
 	char	**res;
 	char	**tmps;
 	char	*tmp;
@@ -34,20 +36,21 @@ typedef struct	s_quote_data {
 	t_quote	quote;
 }			t_quote_data;
 
-typedef struct	s_redir_data {
+typedef struct s_redir_data
+{
 	char	*res;
 	char	*tmp;
 	int		i;
 	t_quote	quote;
 }			t_redir_data;
 
-typedef struct s_path_data {
+typedef struct s_path_data
+{
 	char		*path_env;
 	char		**paths;
 	char		*path;
 	struct stat	st;
 }				t_path_data;
-
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // exec_pipeline.c
@@ -64,7 +67,8 @@ int		wait_and_get_stat(t_exdata *exdata, int	*status, int cmd_count);
 int		brexit(t_exec *pipeline, t_exdata *exdata, int i);
 void	child_signal(int sig);
 void	child_setup_signal(void);
-void	handle_child(t_exec *pipeline, t_exdata *exdata, int pipe[2], int fd_in);
+void	handle_child(t_exec *pipeline,
+			t_exdata *exdata, int pipe[2], int fd_in);
 
 // utils.c
 t_bltn	is_bltn(char *str);
@@ -79,7 +83,7 @@ int		handle_redirs(t_exec *pipeline, t_exdata *exdata);
 // redirs_utils.c
 char	*str_append_str_redir(char *s1, char *s2);
 void	null_init_redir(int *i, t_quote *quote, char **res, char **tmp);
-int		expappend(t_exdata *exdata, char **tmp, char **res, int	mode);
+int		expappend(t_exdata *exdata, char **tmp, char **res, int mode);
 int		handle_when_quote(t_redir_data *dt, t_exdata *exdata, char *str);
 
 // path.c

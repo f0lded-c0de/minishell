@@ -13,6 +13,7 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+typedef struct s_exdata		t_exdata;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
 typedef enum	e_quote {

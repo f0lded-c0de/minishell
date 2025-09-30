@@ -13,6 +13,7 @@
 #ifndef TOKENS_H
 # define TOKENS_H
 
+typedef struct s_maxishell	t_maxishell;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
 typedef enum	e_tkn_type {
@@ -36,6 +37,7 @@ typedef struct	s_tkn {
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // tokenisation.c
 t_tkn	*tokeniser(t_maxishell *maxishell, char *str);
+t_tkn	*token_delimiter(t_tkn **head, char **tmp, char c);
 
 // utils.c
 t_tkn	*tkn_new(char *str);
@@ -43,6 +45,10 @@ void	tkn_append(t_tkn **start, t_tkn *new);
 void	tkn_rm(t_tkn *tkn);
 void	tkn_rm_next(t_tkn *tkn);
 void	tkn_free(t_tkn *tokens);
+
+// utils2.c
+void	null_init_tokeniser(t_tkn **head, char **tmp, t_quote *quote, int *i);
+int		sub_parse_char_unq(t_tkn **head, char **tmp, char c, t_quote *quote);
 
 // check.c
 int		check_unclosed(char *str);

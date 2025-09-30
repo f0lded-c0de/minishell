@@ -37,18 +37,18 @@ static char	*parse_quote(char *str, char *dst, t_delim_status *delim)
 	return (tmp);
 }
 
-static char *parse_char(char *str, char *dst, t_delim_status *delim)
+static char	*parse_char(char *str, char *dst, t_delim_status *delim)
 {
 	if ((str[delim->index] != '\'' && str[delim->index] != '"')
-			|| (str[delim->index] == '\'' && delim->quote == DOUBLE)
-			|| (str[delim->index] == '"' && delim->quote == SINGLE))
+		|| (str[delim->index] == '\'' && delim->quote == DOUBLE)
+		|| (str[delim->index] == '"' && delim->quote == SINGLE))
 	{
 		if (delim->start_word == -1)
 			delim->start_word = delim->index;
 		return (dst);
 	}
-		else
-			return (parse_quote(str, dst, delim));
+	else
+		return (parse_quote(str, dst, delim));
 }
 
 char	*get_delim(char *str)
