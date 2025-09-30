@@ -1,4 +1,65 @@
+/* ************************************************************************** */
+/*                                                                            */
+/*                                                        :::      ::::::::   */
+/*   forkbomb.c                                         :+:      :+:    :+:   */
+/*                                                    +:+ +:+         +:+     */
+/*   By: bsamzun <bsamzun@student.42.fr>            +#+  +:+       +#+        */
+/*                                                +#+#+#+#+#+   +#+           */
+/*   Created: 2025/03/20 06:04:43 by bsamzun           #+#    #+#             */
+/*   Updated: 2025/03/22 11:50:29 by bsamzun          ###   ########.fr       */
+/*                                                                            */
+/* ************************************************************************** */
+
 #include "minishell.h"
+
+static int	update_oldpwd(t_exdata *shell)
+{
+	int	i;
+
+	if (!shell->pwd)
+		return (0);
+	if (shell->oldpwd)
+		free(shell->oldpwd);
+	shell->oldpwd = shell->pwd;
+	i = 0;
+	while (shell->env[i] && ft_strncmp(shell->env[i], "OLDPWD=", 7) != 0)
+		i++;
+	if (shell->env[i])
+	{
+		free(shell->env[i]);
+		shell->env[i] = ft_strjoin("OLDPWD=", shell->oldpwd);
+	}
+	return (0);
+}
+
+static int	update_pwd(t_exdata *shell, char *cwd)
+{
+	int	i;
+
+	shell->pwd = ft_strdup(cwd);
+	i = 0;
+	while (shell->env[i] && ft_strncmp(shell->env[i], "PWD=", 4) != 0)
+		i++;
+	if (shell->env[i])
+	{
+		free(shell->env[i]);
+		shell->env[i] = ft_strjoin("PWD=", shell->pwd);
+	}
+	return (0);
+}
+
+int	update_pwd_env(t_exdata *shell)
+{
+	char	buffer[PATH_MAX];
+	char	*cwd;
+
+	cwd = getcwd(buffer, PATH_MAX);
+	if (!cwd)
+		return (1);
+	update_oldpwd(shell);
+	update_pwd(shell, cwd);
+	return (0);
+}
 
 int	valid_varname(char *name)
 {
@@ -23,7 +84,7 @@ int	valid_varname(char *name)
 
 unsigned long long	ft_atoull(const char *str)
 {
-	int		i;
+	int					i;
 	unsigned long long	n;
 	unsigned long long	dest;
 
@@ -35,7 +96,7 @@ unsigned long long	ft_atoull(const char *str)
 	if (str[i] == '-' || str[i] == '+')
 	{
 		if (str[i] == '-')
-				n = n * -1;
+			n = n * -1;
 		i++;
 	}
 	while (str[i] >= '0' && str[i] <= '9')
@@ -45,4 +106,3 @@ unsigned long long	ft_atoull(const char *str)
 	}
 	return (((dest * n) % 256 + 256) % 256);
 }
-
