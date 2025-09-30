@@ -85,16 +85,17 @@ char	*get_cmd_path(char *cmd, char **envp)
 		return (puterrarg(PAT_ERR, cmd), NULL);
 	}
 	path_env = find_path_env(envp);
-	if (!path_env)
-		return (NULL);
-	paths = ft_split(path_env, ':');
-	if (!paths)
-		return (NULL);
-	path = check_path(paths, cmd);
-	free_split(paths);
-	if (path)
-		return (path);
-	else if (is_it_a_path(cmd))
+	if (path_env)
+	{
+		paths = ft_split(path_env, ':');
+		if (!paths)
+			return (NULL);
+		path = check_path(paths, cmd);
+		free_split(paths);
+		if (path)
+			return (path);
+	}
+	if (!path_env || is_it_a_path(cmd))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
 		{

@@ -18,6 +18,7 @@ void	exit_handler(t_exdata *shell)
 		shell->exit_status = 130;
 	else if (g_status == SIGQUIT)
 		shell->exit_status = 131;
+	g_status = 0;
 }
 
 void	setup_signal(void)

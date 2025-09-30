@@ -137,7 +137,6 @@ int	main(int ac, char **av, char **env)
 	{
 		setup_signal();
 		exit_handler(&maxishell.exdata);
-		g_status = 0;
 		input = readline("Disc0Sh3ll$ ");
 		if (!input)
 			break;
@@ -154,7 +153,6 @@ int	main(int ac, char **av, char **env)
 				if (maxishell.pipeline)
 				{
 					exit_handler(&maxishell.exdata);
-					g_status = 0;
 					maxishell.exdata.exit_status
 						= exec_pipeline(maxishell.pipeline, &maxishell.exdata);
 					exec_free(maxishell.pipeline);
@@ -165,6 +163,8 @@ int	main(int ac, char **av, char **env)
 					}
 				}
 			}
+			else
+				maxishell.exdata.exit_status = 1;
 		}
 	}
 	free_exdata(&maxishell.exdata);

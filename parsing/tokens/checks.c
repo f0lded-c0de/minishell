@@ -39,7 +39,7 @@ void	check_syntax(t_tkn **head)
 		if ((tmp->type == PIPE && (!tmp->next || tmp->next->type == PIPE
 			|| !tmp->prev || tmp->prev->type != WORD))
 			|| (tmp->type >= RED_IN && tmp->type <= APP_OUT
-			&& tmp->next->type != WORD))
+			&& (!tmp->next || tmp->next->type != WORD)))
 		{
 			puterrarg(TKN_ERR, tmp->str);
 			tkn_free(*head);

@@ -15,6 +15,16 @@ static int	is_raw_n(char *str)
 	return (1);
 }
 
+static int	toggle_nl(char **args)
+{
+	int	i;
+
+	i = 0;
+	while (args[i] && is_raw_n(args[i]))
+		i++;
+	return (i);
+}
+
 int	ft_echo(char **args)
 {
 	int	i;
@@ -22,10 +32,10 @@ int	ft_echo(char **args)
 
 	i = 0;
 	newline = 1;
-	if (args && args[0] && is_raw_n(args[0]))
+	if (args && args[0] && toggle_nl(args))
 	{
 		newline = 0;
-		i++;
+		i += toggle_nl(args);
 	}
 	while (args && args[i])
 	{

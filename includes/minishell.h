@@ -52,22 +52,22 @@ void	run_token_test(const char *input);
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 // Errors
-# define SH_ERR "minishell: "
-# define MLC_ERR "minishell: malloc failed"
-# define QUO_ERR "minishell: bad syntax: unclosed quotes"
-# define PAR_ERR "minishell: bad syntax: unclosed parenthesis"
-# define TKN_ERR "minishell: bad syntax: error near unexpected token "
-# define HDC_WRN "minishell: warning: here_doc ended with end-of-file, expected "
-# define PAT_ERR "minishell: command not found: "
+# define SH_ERR "disc0: "
+# define MLC_ERR "disc0: malloc failed"
+# define QUO_ERR "disc0: bad syntax: unclosed quotes"
+# define PAR_ERR "disc0: bad syntax: unclosed parenthesis"
+# define TKN_ERR "disc0: bad syntax: error near unexpected token "
+# define HDC_WRN "disc0: warning: here_doc ended with end-of-file, expected "
+# define PAT_ERR "disc0: command not found: "
 # define DIR_ERR ": Is a directory"
-# define PIP_ERR "minishell: pipe failed: "
-# define FRK_ERR "minishell: fork failed: "
-# define WPD_ERR "minishell: waitpid failed: "
-# define DUP_ERR "minishell: dup failed: "
-# define EXV_ERR "minishell: execve failed: "
-# define ENV_ERR "minishell: where tf your env at bro???"
-# define WTF_ERR "minishell: I have genuinely no clue what happened, sry bro"
-# define PWD_ERR "pwd: no options allowed"
+# define PIP_ERR "disc0: pipe failed: "
+# define FRK_ERR "disc0: fork failed: "
+# define WPD_ERR "disc0: waitpid failed: "
+# define DUP_ERR "disc0: dup failed: "
+# define EXV_ERR "disc0: execve failed: "
+# define ENV_ERR "disc0: where tf your env at bro???"
+# define WTF_ERR "disc0: I have genuinely no clue what happened, sry bro"
+# define CD_ARGS_ERR "disc0: cd: too many arguments"
 
 
 #endif

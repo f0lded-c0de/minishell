@@ -55,9 +55,10 @@ int	forkless_bltn(t_exec *pipeline, t_exdata *exdata)
 		tmpin = dup(STDIN_FILENO);
 	if (pipeline->redout)
 		tmpout = dup(STDOUT_FILENO);
-	ret = handle_redirs(pipeline, exdata);
-	if (ret)
+	if (handle_redirs(pipeline, exdata))
 		ret = exec_bltn(pipeline, exdata);
+	else
+		ret = 1;
 	if (tmpin)
 	{
 		if (dup2(tmpin, STDIN_FILENO) == -1)

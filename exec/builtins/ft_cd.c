@@ -94,6 +94,8 @@ int	ft_cd(t_exdata *shell, int ac, char **args)
 {
 	char	*target_dir;
 
+	if (ac > 2)
+		return (puterr(CD_ARGS_ERR), 1);
 	target_dir = get_target_dir(shell, ac, args);
 	if (!target_dir)
 		return (1);
