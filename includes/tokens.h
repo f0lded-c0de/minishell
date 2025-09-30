@@ -14,9 +14,10 @@
 # define TOKENS_H
 
 typedef struct s_maxishell	t_maxishell;
+typedef enum e_quote		t_quote;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
-typedef enum	e_tkn_type {
+typedef enum e_tkn_type {
 	WORD,
 	PIPE,
 	RED_IN,
@@ -26,7 +27,7 @@ typedef enum	e_tkn_type {
 }	t_tkn_type;
 
 // struct
-typedef struct	s_tkn {
+typedef struct s_tkn {
 	char			*str;
 	t_tkn_type		type;
 	int				hd_fd;

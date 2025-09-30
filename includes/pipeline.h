@@ -10,19 +10,18 @@
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CMD_LIST_H
-# define CMD_LIST_H
+#ifndef PIPELINE_H
+# define PIPELINE_H
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // struct
-typedef struct	s_exec {
+typedef struct s_exec {
 	char			**args;
 	struct s_exec	*next;
 	struct s_exec	*prev;
 	t_tkn			*redin;
 	t_tkn			*redout;
 }					t_exec;
-
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // pipeline.c

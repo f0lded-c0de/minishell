@@ -15,8 +15,7 @@
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // struct
-typedef enum e_bltn
-{
+typedef enum e_bltn {
 	NOT_BLTN,
 	CD,
 	ECHO,

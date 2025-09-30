@@ -13,19 +13,6 @@
 #ifndef EXEC_H
 # define EXEC_H
 
-/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
-
-typedef struct s_exdata
-{
-	char	*pwd;
-	char	*oldpwd;
-	char	**env;
-	int		exit_status;
-	int		*pid;
-}	t_exdata;
-
-extern int	g_status;
-
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
 // Standard
 # include <stdio.h>
@@ -46,6 +33,19 @@ extern int	g_status;
 # define SHELL_NAME "Disc0Sh3ll"
 # define INTERACTIVE_MODE 1
 # define EXECUTION_MODE 0
+
+/* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
+
+typedef struct s_exdata
+{
+	char	*pwd;
+	char	*oldpwd;
+	char	**env;
+	int		exit_status;
+	int		*pid;
+}	t_exdata;
+
+extern int	g_status;
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // Builtins Shell Control

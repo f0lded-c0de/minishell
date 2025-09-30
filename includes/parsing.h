@@ -13,17 +13,23 @@
 #ifndef PARSING_H
 # define PARSING_H
 
+/* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
+
+// Custom
+# include "tokens.h"
+# include "pipeline.h"
+
 typedef struct s_exdata		t_exdata;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // enum
-typedef enum	e_quote {
+typedef enum e_quote {
 	NONE,
 	SINGLE,
 	DOUBLE
 }	t_quote;
 
 // struct
-typedef struct	s_expand_data {
+typedef struct s_expand_data {
 	char	*res;
 	int		expand;
 	int		i[2];
@@ -36,11 +42,5 @@ char	*ft_expand(t_exdata *exdata, char *str);
 // expand_utils.c
 char	*handle_question(char *res, int exit_status);
 char	*handle_expand(char **env, char *str, char *res, int i[2]);
-
-/* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
-// Custom
-# include "tokens.h"
-# include "pipeline.h"
-# include "heredocs.h"
 
 #endif

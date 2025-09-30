@@ -30,6 +30,7 @@
 // Custom
 # include "libft.h"
 # include "parsing.h"
+# include "heredocs.h"
 # include "exec.h"
 
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */

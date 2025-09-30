@@ -16,14 +16,13 @@
 typedef struct s_maxishell	t_maxishell;
 /* * * * * * * * * * * * * * * * * Structures * * * * * * * * * * * * * * * * */
 // struct
-typedef struct	s_delim_status {
+typedef struct s_delim_status {
 	int				index;
 	int				start_word;
 	t_quote			quote;
 }					t_delim_status;
 
 /* * * * * * * * * * * * * * * * * Includes * * * * * * * * * * * * * * * * * */
-
 
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // heredocs.c
@@ -38,7 +37,6 @@ void	close_pipes(int pipe[2]);
 void	finish_hd(t_maxishell *maxishell, char *input, char *delim, int fd);
 void	hd_parent_setup_signal(struct sigaction *old_int);
 void	hd_child_setup_signal(void);
-
 
 /* * * * * * * * * * * * * * * * * * Macros * * * * * * * * * * * * * * * * * */
 
