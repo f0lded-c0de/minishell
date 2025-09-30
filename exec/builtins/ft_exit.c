@@ -16,35 +16,42 @@ static int	ft_strisdigit(char *str)
 	return (1);
 }
 
-int	ft_exit(int ac, char **args)
+static void	free_all(char **args, t_exec *pipeline, t_exdata *exdata)
+{
+	free_exdata(exdata);
+	exec_free(pipeline);
+	free_split(args);
+}
+
+int	ft_exit(int ac, char **args, t_exec *pipeline, t_exdata *exdata)
 {
 	unsigned long long	exit_code;
 
 	exit_code = 0;
-	if (ac > 2)
-	{
-		write(2, "exit: too many arguments\n", 25);
-		free_split(args);
-		return (1);
-	}
-	if (ac == 2)
+	if (ac >= 2)
 	{
 		if (!ft_strisdigit(args[1]))
 		{
 			write(2, "exit: numeric argument required\n", 32);
-			free_split(args);
+			free_all(args, pipeline, exdata);
 			exit(2);
 		}
 		exit_code = ft_atoull(args[1]);
 		if (exit_code >= LLONG_MAX)
 		{
 			write(2, "exit: numeric argument required\n", 32);
-			free_split(args);
+			free_all(args, pipeline, exdata);
 			exit(2);
 		}
-		free_split(args);
+		if (ac > 2)
+		{
+			write(2, "exit: too many arguments\n", 25);
+			free_split(args);
+			return (1);
+		}
+		free_all(args, pipeline, exdata);
 		exit((int)exit_code);
 	}
-	free_split(args);
+	free_all(args, pipeline, exdata);
 	exit(0);
 }

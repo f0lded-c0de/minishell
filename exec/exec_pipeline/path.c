@@ -38,14 +38,52 @@ static char	*check_path(char **paths, char *cmd)
 	return (NULL);
 }
 
+int	is_it_a_path(char *str)
+{
+	int	i;
+
+	i = 0;
+	while (str[i])
+	{
+		if (str[i] == '/')
+		{
+			if (!str[i + 1])
+				return (-1);
+			else
+				return (1);
+		}
+		i++;
+	}
+	return (0);
+}
+
+int	no_such_file(void)
+{
+	if (!ft_strncmp("No such file or directory", strerror(errno), 25))
+		return (1);
+	return (0);
+}
+
 char	*get_cmd_path(char *cmd, char **envp)
 {
-	char	*path_env;
-	char	**paths;
-	char	*path;
+	char		*path_env;
+	char		**paths;
+	char		*path;
+	struct stat	st;
 
 	if (!cmd || !*cmd)
 		return (NULL);
+	if ((cmd[0] == '/' && !cmd[1])
+		|| (cmd[0] == '.' && cmd[1] == '/' && !cmd[2]))
+	{
+		g_status = 126;
+		return (puterrargerr(SH_ERR, cmd, DIR_ERR), NULL);
+	}
+	if (cmd[0] == '.' && (!cmd[1] || (cmd[1] == '.' && !cmd[2])))
+	{
+		g_status = 127;
+		return (puterrarg(PAT_ERR, cmd), NULL);
+	}
 	path_env = find_path_env(envp);
 	if (!path_env)
 		return (NULL);
@@ -54,8 +92,24 @@ char	*get_cmd_path(char *cmd, char **envp)
 		return (NULL);
 	path = check_path(paths, cmd);
 	free_split(paths);
-	if (!path && (cmd[0] == '/' || (cmd[0] == '.' && cmd[1] == '/')))
+	if (path)
+		return (path);
+	else if (is_it_a_path(cmd))
+	{
 		if (access(cmd, F_OK | X_OK) == 0)
-			return (ft_strdup(cmd));
-	return (path);
+		{
+			stat(cmd, &st);
+			if (!S_ISDIR(st.st_mode))
+				return (ft_strdup(cmd));
+			g_status = 126;
+			return (puterrargerr(SH_ERR, cmd, DIR_ERR), NULL);
+		}
+		if (no_such_file())
+			g_status = 127;
+		else
+			g_status = 126;
+		return (puterrargno(SH_ERR, cmd), NULL);
+	}
+	g_status = 127;
+	return (puterrarg(PAT_ERR, cmd), NULL);
 }

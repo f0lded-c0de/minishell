@@ -27,8 +27,7 @@ int	exec_bltn(t_exec *pipeline, t_exdata *exdata)
 	{
 		args = pipeline->args;
 		pipeline->args = NULL;
-		return (free_exdata(exdata), exec_free(pipeline),
-				ft_exit(get_ac(args), args));
+		return (ft_exit(get_ac(args), args, pipeline, exdata));
 	}
 	if (!ft_strncmp(pipeline->args[0], "export", 7))
 		return (ft_export(exdata, pipeline->args));

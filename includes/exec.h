@@ -38,7 +38,7 @@ extern int	g_status;
 /* * * * * * * * * * * * * * * * * Functions  * * * * * * * * * * * * * * * * */
 // Builtins Shell Control
 int					ft_echo(char **args);
-int					ft_exit(int ac, char **args);
+int					ft_exit(int ac, char **args, t_exec *ppline, t_exdata *dt);
 
 // Builtins Directory Navigation
 int					ft_cd(t_exdata *shell, int ac, char **args);

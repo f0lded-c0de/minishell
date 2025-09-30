@@ -92,14 +92,14 @@ static int	handle_redouts(t_tkn *redouts, t_exdata *exdata)
 		{
 			fd = open(redouts->next->str, O_WRONLY | O_CREAT | O_TRUNC, 0644);
 			if (fd == -1)
-				return (puterrno(OPN_ERR), -1);
+				return (puterrargno(SH_ERR, redouts->next->str), -1);
 			redouts = redouts->next->next;
 		}
 		else if (redouts->type == APP_OUT)
 		{
 			fd = open(redouts->next->str, O_WRONLY | O_CREAT | O_APPEND, 0644);
 			if (fd == -1)
-				return (puterrno(OPN_ERR), -1);
+				return (puterrargno(SH_ERR, redouts->next->str), -1);
 			redouts = redouts->next->next;
 		}
 	}
@@ -121,7 +121,7 @@ static int	handle_redins(t_tkn *redins, t_exdata *exdata)
 		{
 			fd = open(redins->next->str, O_RDONLY);
 			if (fd == -1)
-				return (puterrno(OPN_ERR), -1);
+				return (puterrargno(SH_ERR, redins->next->str), -1);
 			redins = redins->next->next;
 		}
 		else if (redins->type == HEREDOC)

@@ -1,5 +1,20 @@
 #include "minishell.h"
 
+static int	is_raw_n(char *str)
+{
+	int	i;
+
+	if (ft_strncmp(str, "-n", 2))
+		return (0);
+	i = 0;
+	while (str[++i])
+	{
+		if (str[i] != 'n')
+			return (0);
+	}
+	return (1);
+}
+
 int	ft_echo(char **args)
 {
 	int	i;
@@ -7,7 +22,7 @@ int	ft_echo(char **args)
 
 	i = 0;
 	newline = 1;
-	if (args && args[0] && ft_strncmp(args[0], "-n", 3) == 0)
+	if (args && args[0] && is_raw_n(args[0]))
 	{
 		newline = 0;
 		i++;

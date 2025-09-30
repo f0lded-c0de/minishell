@@ -1,12 +1,10 @@
 #include "minishell.h"
 
-static void	frexit(t_exec *pipeline, t_exdata *exdata, char *error)
+static void	frexit(t_exec *pipeline, t_exdata *exdata)
 {
-	if (error)
-		puterrarg(error, pipeline->args[0]);
 	exec_free(pipeline);
 	free_exdata(exdata);
-	exit(EXIT_FAILURE);
+	exit(g_status);
 }
 
 void	exec_cmd(t_exec *pipeline, t_exdata *exdata)
@@ -15,14 +13,15 @@ void	exec_cmd(t_exec *pipeline, t_exdata *exdata)
 	char	**env;
 	char	*path;
 
+	g_status = 0;
 	if (!pipeline->args)
-		frexit(pipeline, exdata, NULL);
+		frexit(pipeline, exdata);
 	pipeline->args = unquote(exdata, pipeline->args);
 	if (!pipeline->args)
-		frexit(pipeline, exdata, NULL);
+		frexit(pipeline, exdata);
 	path = get_cmd_path(pipeline->args[0], exdata->env);
 	if (!path)
-		frexit(pipeline, exdata, PAT_ERR);
+		frexit(pipeline, exdata);
 	args = pipeline->args;
 	env = exdata->env;
 	pipeline->args = NULL;

@@ -16,7 +16,7 @@ void	exit_handler(t_exdata *shell)
 {
 	if (g_status == SIGINT)
 		shell->exit_status = 130;
-	if (g_status == SIGQUIT)
+	else if (g_status == SIGQUIT)
 		shell->exit_status = 131;
 }
 
