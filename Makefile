@@ -2,7 +2,7 @@ SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		parsing/tokens/tokeniser.c parsing/tokens/utils.c \
 		parsing/heredocs/get_delim.c parsing/heredocs/heredocs.c \
 		parsing/heredocs/utils.c \
-		parsing/expand/expand.c \
+		parsing/expand/expand.c parsing/expand/expand_utils.c \
 		parsing/pipeline/pipeline.c parsing/pipeline/utils.c \
 		exec/builtins/ft_cd.c exec/builtins/ft_echo.c \
 		exec/builtins/ft_env.c exec/builtins/ft_exit.c \
@@ -12,7 +12,10 @@ SRC =	parsing/tokens/is_charset.c parsing/tokens/checks.c \
 		exec/exec_pipeline/exec_bltn.c exec/exec_pipeline/exec_cmd.c \
 		exec/exec_pipeline/exec_pipeline.c exec/exec_pipeline/path.c \
 		exec/exec_pipeline/redirs.c exec/exec_pipeline/utils.c \
-		exec/exec_pipeline/quote.c \
+		exec/exec_pipeline/quote.c exec/exec_pipeline/pipeline_utils.c \
+		exec/exec_pipeline/pipeline_utils2.c exec/exec_pipeline/split_merge.c \
+		exec/exec_pipeline/quote_utils.c exec/exec_pipeline/redir_utils.c \
+		exec/exec_pipeline/path_utils.c \
 		exec/signal.c \
 		core/main.c core/errors.c core/str.c
 

@@ -12,33 +12,44 @@
 
 #include "minishell.h"
 
-int	g_status = 0;
-
-void	handle_sigint(int sig)
+int	no_such_file(void)
 {
-	g_status = sig;
-	write(STDOUT_FILENO, "\n", 1);
-	rl_on_new_line();
-	rl_replace_line("", 0);
-	rl_redisplay();
+	if (!ft_strncmp("No such file or directory", strerror(errno), 25))
+		return (1);
+	return (0);
 }
 
-void	exit_handler(t_exdata *shell)
+int	get_start(char *cmd)
 {
-	if (g_status == SIGINT)
-		shell->exit_status = 130;
-	else if (g_status == SIGQUIT)
-		shell->exit_status = 131;
-	g_status = 0;
+	if (!cmd || !*cmd)
+		return (0);
+	if ((cmd[0] == '/' && !cmd[1])
+		|| (cmd[0] == '.' && cmd[1] == '/' && !cmd[2]))
+	{
+		g_status = 126;
+		return (puterrargerr(SH_ERR, cmd, DIR_ERR), 0);
+	}
+	if (cmd[0] == '.' && (!cmd[1] || (cmd[1] == '.' && !cmd[2])))
+	{
+		g_status = 127;
+		return (puterrarg(PAT_ERR, cmd), 0);
+	}
+	return (1);
 }
 
-void	setup_signal(void)
+char	*get_mid(char *cmd, t_path_data *dt)
 {
-	struct sigaction	sa;
+	stat(cmd, &dt->st);
+	if (!S_ISDIR(dt->st.st_mode))
+		return (ft_strdup(cmd));
+	g_status = 126;
+	return (puterrargerr(SH_ERR, cmd, DIR_ERR), NULL);
+}
 
-	sa.sa_handler = handle_sigint;
-	sigemptyset(&sa.sa_mask);
-	sa.sa_flags = SA_RESTART;
-	sigaction(SIGINT, &sa, NULL);
-	signal(SIGQUIT, SIG_IGN);
+void	get_end(void)
+{
+	if (no_such_file())
+		g_status = 127;
+	else
+		g_status = 126;
 }

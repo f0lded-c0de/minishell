@@ -33,22 +33,6 @@ static char	*handle_unexpand(char *str, char *res, int i, int j)
 	return (dst);
 }
 
-static char	*handle_question(char *res, int exit_status)
-{
-	char *dst;
-	char *tmp;
-
-	tmp = ft_itoa(exit_status);
-	if (!tmp)
-		return (puterr(MLC_ERR), free(res), NULL);
-	dst = ft_strjoin(res, tmp);
-	free(res);
-	free(tmp);
-	if (!dst)
-		puterr(MLC_ERR);
-	return (dst);
-}
-
 static int	is_still_name(char *str, int i[2])
 {
 	if (i[1] - i[0] == 1 && str[i[1]] >= '0' && str[i[1]] <= '9')
@@ -64,122 +48,62 @@ static int	is_still_name(char *str, int i[2])
 	return (1);
 }
 
-static char	*get_name(char *str, int i[2])
+static void	sub_expand2(t_exdata *exdata, t_expand_data *dt)
 {
-	char	*name;
-	int		size;
-	int		j;
-
-	size = i[1] - i[0];
-	if (i[1] - i[0] > 1)
-		size--;
-	name = malloc(sizeof(char) * (size + 1));
-	if (!name)
-		return (puterr(MLC_ERR), NULL);
-	name[size] = '\0';
-	j = 0;
-	while (++j <= size)
-		name[size - j] = str[i[1] - j];
-	return (name);
+	dt->expand = 0;
+	dt->res = handle_question(dt->res, exdata->exit_status);
+	dt->i[0] = dt->i[1] + 1;
 }
 
-static char	*get_value(char **env, char *name)
+static int	sub_expand1(t_exdata *exdata, t_expand_data *dt, char *str)
 {
-	char	*value;
-	int		i;
-
-	if (!env || !env[0])
-		return (puterr(ENV_ERR), NULL);
-	i = 0;
-	while (env[i])
+	if (dt->expand == 0 && str[dt->i[1]] == '$')
 	{
-		if (!ft_strncmp(env[i], name, ft_strlen(name))
-			&& env[i][ft_strlen(name)] == '=')
+		dt->expand = 1;
+		if (dt->i[0] != dt->i[1])
 		{
-			value = ft_strdup(&env[i][ft_strlen(name) + 1]);
-			if (!value)
-				puterr(MLC_ERR);
-			return (value);
+			dt->res = handle_unexpand(str, dt->res, dt->i[0], dt->i[1]);
+			if (!dt->res)
+				return (0);
+			dt->i[0] = dt->i[1];
 		}
-		i++;
 	}
-	value = ft_strdup("");
-	if (!value)
-		puterr(MLC_ERR);
-	return (value);
-}
-
-static char	*handle_expand(char **env, char *str, char *res, int i[2])
-{
-	char	*name;
-	char	*value;
-	char	*dst;
-
-	name = get_name(str, i);
-	if (!name)
-		return (NULL);
-	value = get_value(env, name);
-	if (!value)
-		return (free(name), NULL);
-	if (i[1] - i[0] == 1)
-		dst = ft_strjoin(res, name);
-	else
-		dst = ft_strjoin(res, value);
-	free(name);
-	free(value);
-	free(res);
-	if (!dst)
-		puterr(MLC_ERR);
-	return (dst);
+	else if (dt->expand == 1
+		&& dt->i[1] - dt->i[0] == 1 && str[dt->i[1]] == '?')
+		sub_expand2(exdata, dt);
+	else if (dt->expand == 1 && !is_still_name(str, dt->i))
+	{
+		if (str[dt->i[1]] != '$')
+			dt->expand = 0;
+		dt->res = handle_expand(exdata->env, str, dt->res, dt->i);
+		if (!dt->res)
+			return (puterr(MLC_ERR), 0);
+		dt->i[0] = dt->i[1];
+	}
+	return (1);
 }
 
 char	*ft_expand(t_exdata *exdata, char *str)
 {
-	char	*res;
-	int		expand;
-	int		i[2];
+	t_expand_data	dt;
 
-	i[0] = 0;
-	i[1] = 0;
-	expand = 0;
-	res = malloc(sizeof(char));
-	if (!res)
+	dt.i[0] = 0;
+	dt.i[1] = 0;
+	dt.expand = 0;
+	dt.res = malloc(sizeof(char));
+	if (!dt.res)
 		return (puterr(MLC_ERR), NULL);
-	res[0] = '\0';
-	while (str[i[1]])
+	dt.res[0] = '\0';
+	while (str[dt.i[1]])
 	{
-		if (expand == 0 && str[i[1]] == '$')
-		{
-			expand = 1;
-			if (i[0] != i[1])
-			{
-				res = handle_unexpand(str, res, i[0], i[1]);
-				if (!res)
-					return (NULL);
-				i[0] = i[1];
-			}
-		}
-		else if (expand == 1 && i[1] - i[0] == 1 && str[i[1]] == '?')
-		{
-			expand = 0;
-			res = handle_question(res, exdata->exit_status);
-			i[0] = i[1] + 1;
-		}
-		else if (expand == 1 && !is_still_name(str, i))
-		{
-			if (str[i[1]] != '$')
-				expand = 0;
-			res = handle_expand(exdata->env, str, res, i);
-			if (!res)
-				return (puterr(MLC_ERR), NULL);
-			i[0] = i[1];
-		}
-		i[1]++;
+		if (!sub_expand1(exdata, &dt, str))
+			return (NULL);
+		dt.i[1]++;
 	}
-	if (expand == 0 && i[0] != i[1])
-		res = handle_unexpand(str, res, i[0], i[1]);
-	else if (expand == 1 && i[0] != i[1])
-		res = handle_expand(exdata->env, str, res, i);
+	if (dt.expand == 0 && dt.i[0] != dt.i[1])
+		dt.res = handle_unexpand(str, dt.res, dt.i[0], dt.i[1]);
+	else if (dt.expand == 1 && dt.i[0] != dt.i[1])
+		dt.res = handle_expand(exdata->env, str, dt.res, dt.i);
 	free(str);
-	return (res);
+	return (dt.res);
 }

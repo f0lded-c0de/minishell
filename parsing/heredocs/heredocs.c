@@ -12,7 +12,7 @@
 
 #include "minishell.h"
 
-static void	child_setup_signal(void)
+static void	hd_child_setup_signal(void)
 {
 	struct sigaction	sa_int;
 	struct sigaction	sa_quit;
@@ -63,7 +63,7 @@ static void	read_hd(t_maxishell *maxishell, char *delim, int fd[2], int expand)
 
 	free_maxishell(maxishell);
 	close(fd[0]);
-	child_setup_signal();
+	hd_child_setup_signal();
 	while (1)
 	{
 		input = readline("> ");

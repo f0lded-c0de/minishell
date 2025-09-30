@@ -24,7 +24,7 @@ int	get_ac(char **av)
 
 int	exec_bltn(t_exec *pipeline, t_exdata *exdata)
 {
-	char **args;
+	char	**args;
 
 	pipeline->args = unquote(exdata, pipeline->args);
 	if (!pipeline->args)
@@ -72,16 +72,14 @@ int	forkless_bltn(t_exec *pipeline, t_exdata *exdata)
 	else
 		ret = 1;
 	if (tmpin)
-	{
 		if (dup2(tmpin, STDIN_FILENO) == -1)
 			return (close(tmpin), puterrno(DUP_ERR), 0);
+	if (tmpin)
 		close(tmpin);
-	}
 	if (tmpout)
-	{
 		if (dup2(tmpout, STDOUT_FILENO) == -1)
 			return (close(tmpout), puterrno(DUP_ERR), 0);
+	if (tmpout)
 		close(tmpout);
-	}
 	return (ret);
 }

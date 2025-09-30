@@ -12,133 +12,41 @@
 
 #include "minishell.h"
 
-static char	*str_append_str(char *s1, char *s2)
+static int	expand_n_splerge(t_exdata *exdata, t_quote_data *dt)
 {
-	size_t	len1;
-	size_t	len2;
-	char	*new;
-
-	if (!s1 || !s2)
-	{
-		if (s1)
-			return (free(s1), NULL);
-		if (s2)
-			return (free(s2), NULL);
-	}
-	len1 = ft_strlen((char *)s1);
-	len2 = ft_strlen((char *)s2);
-	new = ft_calloc(len1 + len2 + 1, sizeof(char));
-	if (!new)
-		return (free(s1), free(s2), puterr(MLC_ERR), NULL);
-	ft_memcpy(new, s1, len1);
-	ft_memcpy(new + len1, s2, len2 + 1);
-	return (free(s1), free(s2), new);
-}
-
-static char	**split_merge(char **src, char **add)
-{
-	char	**res;
-	int		size;
-	int		i;
-	int		j;
-
-	if (!add)
-		return (free_split(src), NULL);
-	size = get_ac(src) + get_ac(add);
-	if (get_ac(src) > 0 && get_ac(add) > 0)
-		size--;
-	res = malloc(sizeof(char *) * (size + 1));
-	if (!res)
-		return (free_split(src), puterr(MLC_ERR), NULL);
-	i = 0;
-	j = -1;
-	while (++j < get_ac(src))
-	{
-		res[i] = src[j];
-		i++;
-	}
-	i--;
-	j = 0;
-	if (i >= 0 && get_ac(add) > 0)
-	{
-		res[i] = str_append_str(res[i], add[j++]);
-		if (!res[i])
-			return (free_split(res), free(src), free_split(add), NULL);
-	}
-	while (++i < size)
-		res[i] = add[j++];
-	res[i] = NULL;
-	return (free(src), free(add), res);
+	dt->tmp = ft_expand(exdata, dt->tmp);
+	if (!split_n_merge(&dt->tmp, &dt->res, &dt->tmps, dt->quote))
+		return (0);
+	return (1);
 }
 
 static char	**unquote_arg(t_exdata *exdata, char *str)
 {
-	char	**res;
-	char	**tmps;
-	char	*tmp;
-	int		i;
-	t_quote	quote;
+	t_quote_data	dt;
 
-	i = 0;
-	quote = NONE;
-	res = NULL;
-	tmp = NULL;
-	while (str[i])
+	null_init_quote(&dt.i, &dt.quote, &dt.res, &dt.tmp);
+	while (str[dt.i])
 	{
-		if ((str[i] == '"' && quote != SINGLE)
-			|| (str[i] == '\'' && quote != DOUBLE))
+		if ((str[dt.i] == '"' && dt.quote != SINGLE)
+			|| (str[dt.i] == '\'' && dt.quote != DOUBLE))
 		{
-			if (tmp && quote != SINGLE)
+			if (dt.tmp && dt.quote != SINGLE)
 			{
-				tmp = ft_expand(exdata, tmp);
-				if (quote == NONE)
-					tmps = ft_split(tmp, ' ');
-				else
-					tmps = ft_split(tmp, '\0');
-				free(tmp);
-				tmp = NULL;
-				if (!tmps)
-					return (free_split(res), puterr(MLC_ERR), NULL);
-				res = split_merge(res, tmps);
-				if (!res)
-					return (puterr(MLC_ERR), NULL);
+				if (!expand_n_splerge(exdata, &dt))
+					return (NULL);
 			}
-			else if (tmp)
-			{
-				tmps = ft_split(tmp, '\0');
-				free(tmp);
-				tmp = NULL;
-				if (!tmps)
-					return (free_split(res), puterr(MLC_ERR), NULL);
-				res = split_merge(res, tmps);
-				if (!res)
-					return (puterr(MLC_ERR), NULL);
-			}
-			if (str[i] == '"' && quote == NONE)
-				quote = DOUBLE;
-			else if (str[i] == '"' && quote == DOUBLE)
-				quote = NONE;
-			else if (str[i] == '\'' && quote == NONE)
-				quote = SINGLE;
-			else if (str[i] == '\'' && quote == SINGLE)
-				quote = NONE;
+			else if (dt.tmp)
+				if (!split_n_merge(&dt.tmp, &dt.res, &dt.tmps, SINGLE))
+					return (NULL);
+			update_quote(str, &dt.quote, dt.i);
 		}
-		else
-		{
-			tmp = str_append_char(tmp, str[i]);
-			if (!tmp)
-				return (free_split(res), NULL);
-		}
-		i++;
+		else if (!str_append_char_bis(dt.res, &dt.tmp, str, dt.i))
+			return (NULL);
+		dt.i++;
 	}
-	if (tmp)
-	{
-		tmp = ft_expand(exdata, tmp);
-		res = split_merge(res, ft_split(tmp, ' '));
-		if (tmp)
-			free(tmp);
-	}
-	return (res);
+	if (dt.tmp)
+		handle_end(exdata, &dt.res, &dt.tmp);
+	return (dt.res);
 }
 
 static char	**split_append(char **src, char **add)

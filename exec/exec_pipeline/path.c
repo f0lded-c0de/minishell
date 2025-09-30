@@ -69,58 +69,28 @@ int	is_it_a_path(char *str)
 	return (0);
 }
 
-int	no_such_file(void)
-{
-	if (!ft_strncmp("No such file or directory", strerror(errno), 25))
-		return (1);
-	return (0);
-}
-
 char	*get_cmd_path(char *cmd, char **envp)
 {
-	char		*path_env;
-	char		**paths;
-	char		*path;
-	struct stat	st;
+	t_path_data	dt;
 
-	if (!cmd || !*cmd)
+	if (!get_start(cmd))
 		return (NULL);
-	if ((cmd[0] == '/' && !cmd[1])
-		|| (cmd[0] == '.' && cmd[1] == '/' && !cmd[2]))
+	dt.path_env = find_path_env(envp);
+	if (dt.path_env)
 	{
-		g_status = 126;
-		return (puterrargerr(SH_ERR, cmd, DIR_ERR), NULL);
-	}
-	if (cmd[0] == '.' && (!cmd[1] || (cmd[1] == '.' && !cmd[2])))
-	{
-		g_status = 127;
-		return (puterrarg(PAT_ERR, cmd), NULL);
-	}
-	path_env = find_path_env(envp);
-	if (path_env)
-	{
-		paths = ft_split(path_env, ':');
-		if (!paths)
+		dt.paths = ft_split(dt.path_env, ':');
+		if (!dt.paths)
 			return (NULL);
-		path = check_path(paths, cmd);
-		free_split(paths);
-		if (path)
-			return (path);
+		dt.path = check_path(dt.paths, cmd);
+		free_split(dt.paths);
+		if (dt.path)
+			return (dt.path);
 	}
-	if (!path_env || is_it_a_path(cmd))
+	if (!dt.path_env || is_it_a_path(cmd))
 	{
 		if (access(cmd, F_OK | X_OK) == 0)
-		{
-			stat(cmd, &st);
-			if (!S_ISDIR(st.st_mode))
-				return (ft_strdup(cmd));
-			g_status = 126;
-			return (puterrargerr(SH_ERR, cmd, DIR_ERR), NULL);
-		}
-		if (no_such_file())
-			g_status = 127;
-		else
-			g_status = 126;
+			return (get_mid(cmd, &dt));
+		get_end();
 		return (puterrargno(SH_ERR, cmd), NULL);
 	}
 	g_status = 127;
